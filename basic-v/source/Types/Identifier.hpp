@@ -5,7 +5,7 @@
 
 #include "Token.hpp"
 
-namespace bv::Types
+namespace bv
 {
 	struct Identifier
 	{
