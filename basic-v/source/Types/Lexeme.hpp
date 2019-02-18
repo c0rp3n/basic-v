@@ -10,6 +10,42 @@ namespace bv
 	enum struct Lexeme : uint64_t
 	{
 		/// <summary>
+		/// Data Type String, a squence of chars surround by "".
+		/// </summary>
+		String,
+		/// <summary>
+		/// Data Type Real, two sets of numbers seperated by a period.
+		/// </summary>
+		Real,
+		/// <summary>
+		/// Data Type Interger, a seriries of numeric chars.
+		/// </summary>
+		Integer,
+		/// <summary>
+		/// Variable or Section Identifier, starts with an alphabetic char then can be followed by numbers or underscores.
+		/// </summary>
+		Identifier,
+		/// <summary>
+		/// Syntax Comma, seperates values.
+		/// </summary>
+		Comma,
+		/// <summary>
+		/// Syntax Colon.
+		/// </summary>
+		Colon,
+		/// <summary>
+		/// Syntax Semi Colon.
+		/// </summary>
+		SemiColon,
+		/// <summary>
+		/// Syntax Open Bracket.
+		/// </summary>
+		OpenBracket,
+		/// <summary>
+		/// Syntax Close Bracket.
+		/// </summary>
+		CloseBracket,
+		/// <summary>
 		/// Function Absolute, returns the absolute value of the passed variable.
 		/// </summary>
 		Abs,
