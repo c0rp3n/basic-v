@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lexer", "basic-v\lexer.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parser", "basic-v\parser.vcxproj", "{B6103633-D875-4829-8EE5-4757A378C348}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compiler", "basic-v\compiler.vcxproj", "{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{B6103633-D875-4829-8EE5-4757A378C348}.Release|x64.Build.0 = Release|x64
 		{B6103633-D875-4829-8EE5-4757A378C348}.Release|x86.ActiveCfg = Release|Win32
 		{B6103633-D875-4829-8EE5-4757A378C348}.Release|x86.Build.0 = Release|Win32
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Debug|x64.ActiveCfg = Debug|x64
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Debug|x64.Build.0 = Debug|x64
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Debug|x86.ActiveCfg = Debug|Win32
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Debug|x86.Build.0 = Debug|Win32
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Release|x64.ActiveCfg = Release|x64
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Release|x64.Build.0 = Release|x64
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Release|x86.ActiveCfg = Release|Win32
+		{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

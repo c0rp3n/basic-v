@@ -21,6 +21,10 @@
   <ItemGroup>
     <ClCompile Include="source\lexer.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Types\Identifier.hpp" />
+    <ClInclude Include="source\Types\Token.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{067D5DD4-8BAE-43C6-9C6B-A3335D78D466}</ProjectGuid>
@@ -116,6 +120,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
