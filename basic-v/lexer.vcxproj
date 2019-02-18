@@ -22,8 +22,8 @@
     <ClCompile Include="source\lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Types\Identifier.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
+    <ClInclude Include="source\Types\Lexeme.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -4,10 +4,10 @@
     <ClCompile Include="source\lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Types\Identifier.hpp">
+    <ClInclude Include="source\Types\Token.hpp">
       <Filter>Types</Filter>
     </ClInclude>
-    <ClInclude Include="source\Types\Token.hpp">
+    <ClInclude Include="source\Types\Lexeme.hpp">
       <Filter>Types</Filter>
     </ClInclude>
   </ItemGroup>

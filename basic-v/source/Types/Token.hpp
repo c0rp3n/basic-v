@@ -11,7 +11,7 @@ namespace bv
 	{
 		uint64_t line;
 		uint64_t position;
-		TokenType token;
+		Lexeme token;
 		std::string value;
 	};
 }
