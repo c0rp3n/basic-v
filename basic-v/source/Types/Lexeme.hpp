@@ -46,6 +46,46 @@ namespace bv
 		/// </summary>
 		CloseBracket,
 		/// <summary>
+		/// Operator Assign (=), assigns the rhs to the variable on the lhs.
+		/// </summary>
+		Assign,
+		/// <summary>
+		/// Operator Addition (+), add the lhs and rhs.
+		/// </summary>
+		Addition,
+		/// <summary>
+		/// Operator Subtraction (-), subtract the rhs from the lhs.
+		/// </summary>
+		Subtraction,
+		/// <summary>
+		/// Operator Multiply (*), multiply the lhs by the rhs.
+		/// </summary>
+		Multiply,
+		/// <summary>
+		/// Operator Divide (/), divide the lhs by the rhs.
+		/// </summary>
+		Divide,
+		/// <summary>
+		/// Operator Equal to (==), compare the lhs too the rhs.
+		/// </summary>
+		Equal,
+		/// <summary>
+		/// Operator Greater than (&gt;), compares the lhs too the rhs.
+		/// </summary>
+		GreaterThan,
+		/// <summary>
+		/// Operator Greater than or Equal to (&gt;=), compares the lhs too the rhs.
+		/// </summary>
+		GreaterThanOrEqual,
+		/// <summary>
+		/// Operator Less than or Equal to (&lt;), compares the lhs too the rhs.
+		/// </summary>
+		LessThan,
+		/// <summary>
+		/// Operator Less than or Equal to  (&lt;=), compares the lhs too the rhs.
+		/// </summary>
+		LessThanOrEqual,
+		/// <summary>
 		/// Function Absolute, returns the absolute value of the passed variable.
 		/// </summary>
 		Abs,
