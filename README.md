@@ -1,2 +1,2 @@
-# basic-v
-The compilations of basic; the chronicles of group 26
+# Basic-V
+The compilations of basic; the chronicles of group 26.
