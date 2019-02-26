@@ -1,5 +1,7 @@
 # Style guide
-This document lays out the general style that should be followed for Basic-V.
+This document lays out some of the specifics that should be followed for Basic-V.
+
+Though for anything not covered here please refer too [link](https://google.github.io/styleguide/cppguide.html).
 
 ## Example
 ```cpp
