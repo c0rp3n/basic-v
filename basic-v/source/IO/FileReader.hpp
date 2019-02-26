@@ -12,6 +12,11 @@ namespace bv
         static class FileReader
         {
         public:
+            /// <summary>
+            /// Parses all of the lines in a file.
+            /// </summary>
+            /// <param name="filepath">Path to the file including name and extension.</param>
+            /// <returns>A vector of each line in the file.</returns>
             static std::vector<std::string> ReadLines(std::string filepath)
             {
                 std::vector<std::string> lines;
