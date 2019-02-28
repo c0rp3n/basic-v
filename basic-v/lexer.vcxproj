@@ -22,6 +22,7 @@
     <ClCompile Include="source\lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\IO\FileReader.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
     <ClInclude Include="source\Types\Lexeme.hpp" />
   </ItemGroup>
@@ -85,6 +86,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+    <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)Libs\mio\single_include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -121,6 +125,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

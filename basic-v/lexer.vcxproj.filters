@@ -10,10 +10,16 @@
     <ClInclude Include="source\Types\Lexeme.hpp">
       <Filter>Types</Filter>
     </ClInclude>
+    <ClInclude Include="source\IO\FileReader.hpp">
+      <Filter>IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Types">
       <UniqueIdentifier>{25433202-4c60-4107-8fea-f2c0362b72d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{05dcf82b-21be-405c-ae0c-619e89edc7a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
