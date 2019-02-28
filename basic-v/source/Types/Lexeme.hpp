@@ -38,51 +38,59 @@ namespace bv
 		/// </summary>
 		SemiColon,
 		/// <summary>
-		/// Syntax Open Bracket.
+		/// Syntax Open Bracket ('(').
 		/// </summary>
 		OpenBracket,
 		/// <summary>
-		/// Syntax Close Bracket.
+		/// Syntax Close Bracket (')').
 		/// </summary>
 		CloseBracket,
+        /// <summary>
+        /// Syntax Open Bracket ('{').
+        /// </summary>
+        OpenBrace,
+        /// <summary>
+        /// Syntax Close Bracket ('}').
+        /// </summary>
+        CloseBrace,
 		/// <summary>
-		/// Operator Assign (=), assigns the rhs to the variable on the lhs.
+		/// Operator Assign ('='), assigns the rhs to the variable on the lhs.
 		/// </summary>
 		Assign,
 		/// <summary>
-		/// Operator Addition (+), add the lhs and rhs.
+		/// Operator Addition ('+'), add the lhs and rhs.
 		/// </summary>
 		Addition,
 		/// <summary>
-		/// Operator Subtraction (-), subtract the rhs from the lhs.
+		/// Operator Subtraction ('-'), subtract the rhs from the lhs.
 		/// </summary>
 		Subtraction,
 		/// <summary>
-		/// Operator Multiply (*), multiply the lhs by the rhs.
+		/// Operator Multiply ('*'), multiply the lhs by the rhs.
 		/// </summary>
 		Multiply,
 		/// <summary>
-		/// Operator Divide (/), divide the lhs by the rhs.
+		/// Operator Divide ('/'), divide the lhs by the rhs.
 		/// </summary>
 		Divide,
 		/// <summary>
-		/// Operator Equal to (==), compare the lhs too the rhs.
+		/// Operator Equal to ('=='), compare the lhs too the rhs.
 		/// </summary>
 		Equal,
 		/// <summary>
-		/// Operator Greater than (&gt;), compares the lhs too the rhs.
+		/// Operator Greater than ('&gt;'), compares the lhs too the rhs.
 		/// </summary>
 		GreaterThan,
 		/// <summary>
-		/// Operator Greater than or Equal to (&gt;=), compares the lhs too the rhs.
+		/// Operator Greater than or Equal to ('&gt;='), compares the lhs too the rhs.
 		/// </summary>
 		GreaterThanOrEqual,
 		/// <summary>
-		/// Operator Less than or Equal to (&lt;), compares the lhs too the rhs.
+		/// Operator Less than or Equal to ('&lt;'), compares the lhs too the rhs.
 		/// </summary>
 		LessThan,
 		/// <summary>
-		/// Operator Less than or Equal to  (&lt;=), compares the lhs too the rhs.
+		/// Operator Less than or Equal to  ('&lt;='), compares the lhs too the rhs.
 		/// </summary>
 		LessThanOrEqual,
 		/// <summary>
