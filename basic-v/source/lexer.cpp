@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
+#include <thread>
 #include <vector>
 
-#include "../../Libs/mio/single_include/mio/mio.hpp"
-
 #include "IO/FileReader.hpp"
+#include "Types/Lexeme.hpp"
+#include "Types/Token.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -33,4 +34,24 @@ int main(int argc, char* argv[])
     }
 
     std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
+    if (lines.size() < 1)
+    {
+        return 0;
+    }
+
+    int threadCount = std::thread::hardware_concurrency();
+    int linesPerThread = lines.size() / threadCount;
+    std::vector<std::thread> threads;
+    threads.reserve(threadCount);
+    for (int i = 0; i < threadCount; i++)
+    {
+        threads.push_back(std::thread());
+    }
+
+    for (std::thread &t : threads)
+    {
+        t.join();
+    }
+
+    return 0;
 }
