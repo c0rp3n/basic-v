@@ -41,7 +41,8 @@ int main(int argc, char* argv[])
 
     int threadCount = std::thread::hardware_concurrency();
     int linesPerThread = lines.size() / threadCount;
-    std::vector<std::thread> threads; threads.reserve(threadCount);
+    std::vector<std::thread> threads;
+    threads.reserve(threadCount);
     for (int i = 0; i < threadCount; i++)
     {
         threads.push_back(std::thread());
