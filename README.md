@@ -5,4 +5,4 @@ The compilations of basic; the chronicles of group 26.
 [STYLEGUIDE](STYLEGUIDE.md "STYLEGUIDE")
 
 ## License
-[MIT](LICENCSE.md "MIT")
+[MIT](LICENSE.md "MIT")
