@@ -10,17 +10,17 @@ namespace bv
     enum struct Lexeme : uint64_t
     {
         /// <summary>
-        /// Data Type String, a squence of chars surround by "".
+        /// Data Type Interger, a seriries of numeric chars.
         /// </summary>
-        String,
+        Integer,
         /// <summary>
         /// Data Type Real, two sets of numbers seperated by a period.
         /// </summary>
         Real,
         /// <summary>
-        /// Data Type Interger, a seriries of numeric chars.
+        /// Data Type String, a squence of chars surround by "".
         /// </summary>
-        Integer,
+        String,
         /// <summary>
         /// Variable or Section Identifier, starts with an alphabetic char then can be followed by numbers or underscores.
         /// </summary>
@@ -113,6 +113,10 @@ namespace bv
         /// Keyword Data, declares the start of a constant piece of data, must be the first thing on a program line.
         /// </summary>
         Data,
+        /// <summary>
+        /// Keyword Dim, declares the start of a mutable piece of data, must be the first thing on a program line.
+        /// </summary>
+        Dim,
         /// <summary>
         /// Keyword Define, pre declares a function, must be the first thing on a program line.
         /// </summary>
