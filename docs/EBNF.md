@@ -8,8 +8,8 @@ program = block;
 ### Block
 ```ebnf
 block = [ "def" "sub" identifier ; ]
-        [ "data" identifier "=" data type {"," identifier "=" number} ]
-        [ "dim" identifier [ "=" data type ] { "," identifier [ "=" number ] } ]
+        [ "data" identifier "=" data type { "," identifier "=" data type } ]
+        [ "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] } ]
         { "sub" identifier ";" block ";" } statement ;
 ```
 Example Basic V code.
@@ -31,17 +31,17 @@ statement = [ identifier "=" expression
 
 ### Condition
 ```ebnf
-condition = expression ("="|"<"|"<="|">"|">="|"<<"|">>") expression ;
+condition = expression ( "=" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
 ```
 
 ### Expression
 ```ebnf
-expression = [ "+"|"-" ] term { ( "+"|"-" ) term } ;
+expression = [ "+" | "-" ] term { ( "+" | "-" ) term } ;
 ```
 
 ### Term
 ```ebnf
-term = factor { ( "*"|"/" ) factor } ;
+term = factor { ( "*" | "/" ) factor } ;
 ```
 
 ### Factor
