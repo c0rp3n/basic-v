@@ -2,20 +2,31 @@
 
 ### Program
 ```ebnf
-program = block;
+program = { [ "def" "sub" identifier ( [identifier] { [ "," identifier ] } ) ; ] }
+          block
+          { "sub" identifier ";" block ";" } ;
+```
+```basic
+def sub PrintVal (num)
+
+...
+
+sub PrintDoubleVal (num)
+    print num * 2
+end sub
 ```
 
 ### Block
 ```ebnf
-block = [ "def" "sub" identifier ; ]
-        [ "data" identifier "=" data type { "," identifier "=" data type } ]
+block = [ "data" identifier "=" data type { "," identifier "=" data type } ]
         [ "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] } ]
-        { "sub" identifier ";" block ";" } statement ;
+        statement ;
 ```
 Example Basic V code.
 ```basic
 data constantInteger = 1
 dim Var_String1 = "Hello World!"
+print Var_String1, " ", 1
 ```
 
 ### Statement
@@ -31,7 +42,13 @@ statement = [ identifier "=" expression
 
 ### Condition
 ```ebnf
-condition = expression ( "=" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
+condition = expression ( "==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
+```
+```basic
+data val = 1
+if val == 1 then
+    ...
+end if
 ```
 
 ### Expression

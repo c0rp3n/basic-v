@@ -226,7 +226,7 @@ namespace bv
         /// </summary>
         Or,
         /// <summary>
-        /// Keyword Otherwise, the optional default case of a case statement. 
+        /// Keyword Otherwise, the optional default case of a case statement.
         /// </summary>
         Otherwise,
         /// <summary>
