@@ -2,43 +2,97 @@
 
 ### Program
 ```ebnf
-program = block "." .
+program = block;
 ```
 
 ### Block
 ```ebnf
-block = [ "const" ident "=" number {"," ident "=" number} ";"]
-        [ "var" ident {"," ident} ";"]
-        { "procedure" ident ";" block ";" } statement .
+block = [ "def" "sub" identifier ; ]
+        [ "data" identifier "=" data type {"," identifier "=" number} ]
+        [ "dim" identifier [ "=" data type ] { "," identifier [ "=" number ] } ]
+        { "sub" identifier ";" block ";" } statement ;
+```
+Example Basic V code.
+```basic
+data constantInteger = 1
+dim Var_String1 = "Hello World!"
 ```
 
 ### Statement
 ```ebnf
-statement = [ ident ":=" expression
-            | "call" ident
-            | "?" ident
+statement = [ identifier "=" expression
+            | "call" identifier
+            | "?" identifier
             | "!" expression
             | "begin" statement {";" statement } "end"
             | "if" condition "then" statement
-            | "while" condition "do" statement ].
+            | "while" condition "do" statement ] ;
 ```
 
 ### Condition
 ```ebnf
-condition = expression ("="|"#"|"<"|"<="|">"|">="|"<<"|">>") expression .
+condition = expression ("="|"<"|"<="|">"|">="|"<<"|">>") expression ;
 ```
 
 ### Expression
 ```ebnf
-expression = [ "+"|"-"] term { ("+"|"-") term}.
+expression = [ "+"|"-" ] term { ( "+"|"-" ) term } ;
 ```
 
 ### Term
 ```ebnf
-term = factor {("*"|"/") factor}.
+term = factor { ( "*"|"/" ) factor } ;
 ```
 
 ### Factor
 ```ebnf
-factor = ident | number | "(" expression ")".
+factor = identifier | number | "(" expression ")" ;
+```
+
+### Types
+```ebnf
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+       | "H" | "I" | "J" | "K" | "L" | "M" | "N"
+       | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+       | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
+       | "c" | "d" | "e" | "f" | "g" | "h" | "i"
+       | "j" | "k" | "l" | "m" | "n" | "o" | "p"
+       | "q" | "r" | "s" | "t" | "u" | "v" | "w"
+       | "x" | "y" | "z" ;
+```
+
+```ebnf
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+```
+
+```ebnf
+white space = ? white space characters ? ;
+```
+
+```ebnf
+all characters = ? all visible characters ? ;
+```
+
+```ebnf
+identifier = letter, { letter | digit | "_" } ;
+```
+
+```ebnf
+integer = [ "-" ], digit, { digit } ;
+```
+
+```ebnf
+real = [ "-" ], digit, { digit }, ".", "digit", { digit } ;
+```
+
+```ebnf
+string = '"' , { all characters - '"' }, '"' ;
+```
+
+```ebnf
+number = integer | real ;
+```
+
+```ebnf
+data types = integer | real | string ;
 ```
