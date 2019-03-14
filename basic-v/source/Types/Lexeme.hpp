@@ -74,7 +74,7 @@ namespace bv
         /// </summary>
         Divide,
         /// <summary>
-        /// Operator Equal to ('=='), compare the lhs too the rhs.
+        /// Operator Equal to ('&gt;&lt;'), compare the lhs too the rhs.
         /// </summary>
         Equal,
         /// <summary>

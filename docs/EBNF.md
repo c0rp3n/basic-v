@@ -20,33 +20,42 @@ end sub
 ```ebnf
 block = [ "data" identifier "=" data type { "," identifier "=" data type } ]
         [ "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] } ]
-        statement ;
+        { statement, white space } ;
 ```
 Example Basic V code.
 ```basic
 data constantInteger = 1
 dim Var_String1 = "Hello World!"
-print Var_String1, " ", 1
 ```
 
 ### Statement
 ```ebnf
 statement = [ identifier "=" expression
             | "call" identifier
-            | "?" identifier
             | "!" expression
-            | "begin" statement {";" statement } "end"
+            | "for" identifier "=" ( identifier | integer ) to ( identifier | integer )
             | "if" condition "then" statement
             | "while" condition "do" statement ] ;
+```
+```basic
+dim var = 2
+
+var = 3
+call PrintDoubleVal (var)
+if !(var <> 2) then print var
+
+for i = 0 to var
+    ...
+next i
 ```
 
 ### Condition
 ```ebnf
-condition = expression ( "==" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
+condition = expression ( "<>" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
 ```
 ```basic
 data val = 1
-if val == 1 then
+if val <> 1 then
     ...
 end if
 ```
