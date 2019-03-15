@@ -2,7 +2,7 @@
 
 ### Program
 ```ebnf
-program = { [ "def" "sub" identifier ( [identifier] { [ "," identifier ] } ) ; ] }
+program = { [ "def" "sub" identifier ( [identifier] { "," identifier } ) ; ] }
           block
           { "sub" identifier ";" block ";" } ;
 ```
@@ -11,21 +11,22 @@ def sub PrintVal (num)
 
 ...
 
-sub PrintDoubleVal (num)
-    print num * 2
+sub PrintVal (num)
+    print num
 end sub
 ```
 
 ### Block
 ```ebnf
-block = [ "data" identifier "=" data type { "," identifier "=" data type } ]
-        [ "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] } ]
-        { statement, white space } ;
+block = { "data" identifier "=" data type { "," identifier "=" data type }
+        | "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] }
+        | statement, white space } ;
 ```
-Example Basic V code.
 ```basic
 data constantInteger = 1
-dim Var_String1 = "Hello World!"
+dim Var_Hello1 = "Hello", Var_Hellow2
+
+Var_Hellow2 = "World!"
 ```
 
 ### Statement
@@ -51,11 +52,11 @@ next i
 
 ### Condition
 ```ebnf
-condition = expression ( "<>" | "<" | "<=" | ">" | ">=" | "<<" | ">>" ) expression ;
+condition = expression ( "<>" | "<" | "<=" | ">" | ">=" ) expression ;
 ```
 ```basic
 data val = 1
-if val <> 1 then
+if val <= 1 then
     ...
 end if
 ```
@@ -64,15 +65,26 @@ end if
 ```ebnf
 expression = [ "+" | "-" ] term { ( "+" | "-" ) term } ;
 ```
+```basic
+dim var = 1 + (4 - 2)
+```
 
 ### Term
 ```ebnf
-term = factor { ( "*" | "/" ) factor } ;
+term = factor { ( "*" | "/" | "<<" | ">>" ) factor } ;
+```
+```basic
+dim var = 2 * 3
+var = var / 2
+var = var << var
 ```
 
 ### Factor
 ```ebnf
 factor = identifier | number | "(" expression ")" ;
+```
+```basic
+dim var = 1 << 3 * (16 / 2)
 ```
 
 ### Types
