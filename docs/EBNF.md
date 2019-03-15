@@ -2,9 +2,9 @@
 
 ### Program
 ```ebnf
-program = { [ "def" "sub" identifier ( [identifier] { "," identifier } ) ; ] }
-          block
-          { "sub" identifier ";" block ";" } ;
+program = { "def", "sub", identifier, "(", [ identifier, { "," identifier } ], ")", white space },
+          block,
+          { "sub", identifier, white space, block, "end", "sub", white space } ;
 ```
 ```basic
 def sub PrintVal (num)
@@ -18,8 +18,8 @@ end sub
 
 ### Block
 ```ebnf
-block = { "data" identifier "=" data type { "," identifier "=" data type }
-        | "dim" identifier [ "=" data type ] { "," identifier [ "=" data type ] }
+block = { "data", identifier, "=", data type, { ",", identifier, "=", data type }, white space
+        | "dim", identifier, [ "=", data type ] { ",", identifier, [ "=", data type ] }, white space
         | statement, white space } ;
 ```
 ```basic
@@ -31,12 +31,12 @@ Var_Hellow2 = "World!"
 
 ### Statement
 ```ebnf
-statement = [ identifier "=" expression
-            | "call" identifier
-            | "!" expression
-            | "for" identifier "=" ( identifier | integer ) to ( identifier | integer )
-            | "if" condition "then" statement
-            | "while" condition "do" statement ] ;
+statement = [ identifier, "=", expression
+            | "call", identifier
+            | "!", expression
+            | "for", identifier "=" ( identifier | integer ) to ( identifier | integer )
+            | "if", condition, "then", statement
+            | "while", condition, "do", statement ] ;
 ```
 ```basic
 dim var = 2
@@ -52,7 +52,7 @@ next i
 
 ### Condition
 ```ebnf
-condition = expression ( "<>" | "<" | "<=" | ">" | ">=" ) expression ;
+condition = expression, ( "<>" | "<" | "<=" | ">" | ">=" ), expression ;
 ```
 ```basic
 data val = 1
@@ -63,7 +63,7 @@ end if
 
 ### Expression
 ```ebnf
-expression = [ "+" | "-" ] term { ( "+" | "-" ) term } ;
+expression = [ "+" | "-" ], term, { ( "+" | "-" ), term } ;
 ```
 ```basic
 dim var = 1 + (4 - 2)
@@ -71,7 +71,7 @@ dim var = 1 + (4 - 2)
 
 ### Term
 ```ebnf
-term = factor { ( "*" | "/" | "<<" | ">>" ) factor } ;
+term = factor, { ( "*" | "/" | "<<" | ">>" ), factor } ;
 ```
 ```basic
 dim var = 2 * 3
@@ -81,7 +81,7 @@ var = var << var
 
 ### Factor
 ```ebnf
-factor = identifier | number | "(" expression ")" ;
+factor = identifier | number | "(", expression, ")" ;
 ```
 ```basic
 dim var = 1 << 3 * (16 / 2)
