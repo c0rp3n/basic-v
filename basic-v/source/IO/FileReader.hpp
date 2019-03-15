@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "../../../Libs/mio/include/mio/mio.hpp"
-
 namespace bv
 {
     namespace IO
@@ -22,8 +20,8 @@ namespace bv
                 std::vector<std::string> lines;
                 std::string data;
                 {
-                    mio::mmap_source mmap(filepath);
-                    data = std::string(mmap.data);
+                    // @todo reimplement file reading.
+                    data = std::string();
                 }
 
                 std::vector<uint64_t> lineLengths;
