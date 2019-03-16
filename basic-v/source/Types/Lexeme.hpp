@@ -54,6 +54,10 @@ namespace bv
         /// </summary>
         CloseBrace,
         /// <summary>
+        /// Syntax New Line ('\n').
+        /// </summary>
+        NewLine,
+        /// <summary>
         /// Operator Assign ('='), assigns the rhs to the variable on the lhs.
         /// </summary>
         Assign,
@@ -142,7 +146,7 @@ namespace bv
         /// </summary>
         EndIf,
         /// <summary>
-        /// Keyword End If, marks an end of a multi line if clause.
+        /// Keyword End While, marks an end of a multi line while loop.
         /// </summary>
         EndWhile,
         /// <summary>

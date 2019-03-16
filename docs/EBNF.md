@@ -2,9 +2,9 @@
 
 ### Program
 ```ebnf
-program = { "def", "sub", identifier, "(", [ identifier, { "," identifier } ], ")", white space },
+program = { "def", "sub", identifier, "(", [ identifier, { "," identifier } ], ")", new line },
           block,
-          { "sub", identifier, white space, block, "end", "sub", white space } ;
+          { "sub", identifier, new line, block, "end", "sub", new line } ;
 ```
 ```basic
 def sub PrintVal (num)
@@ -18,9 +18,9 @@ end sub
 
 ### Block
 ```ebnf
-block = { "data", identifier, "=", data type, { ",", identifier, "=", data type }, white space
-        | "dim", identifier, [ "=", data type ] { ",", identifier, [ "=", data type ] }, white space
-        | statement, white space } ;
+block = { "data", identifier, "=", data type, { ",", identifier, "=", data type }, new line
+        | "dim", identifier, [ "=", data type ] { ",", identifier, [ "=", data type ] }, new line
+        | statement, new line } ;
 ```
 ```basic
 data constantInteger = 1
@@ -31,19 +31,44 @@ Var_Hellow2 = "World!"
 
 ### Statement
 ```ebnf
-statement = [ identifier, "=", expression
-            | "call", identifier
-            | "!", expression
-            | "for", identifier "=" ( identifier | integer ) to ( identifier | integer )
-            | "if", condition, "then", statement
-            | "while", condition, "do", statement ] ;
+statement = [ identifier, "=", ( expression | string )
+            | "call", identifier, "(", [ ( expression | string ) ], ")"
+            | "for", identifier, "=", ( identifier | integer ), "to", ( identifier | integer ),
+                ( new line, block, "next", identifier
+                | statement )
+            | "if", condition, "then",
+                ( new line, block, "endif"
+                | statement )
+            | "while", condition, "do",
+                ( new line, block, "endwhile"
+                | statement )
+            ] ;
 ```
+
+#### Assignment
 ```basic
 dim var = 2
-
 var = 3
-call PrintDoubleVal (var)
+```
+
+#### Function Call
+```basic
+call Void ()
+call PrintDoubleVal (2, var)
+```
+
+#### If Statement
+```basic
 if !(var <> 2) then print var
+
+if (var < 2) then
+    ...
+end if
+```
+
+#### For Loop
+```basic
+for i = 1 to 10 print i
 
 for i = 0 to var
     ...
@@ -52,7 +77,8 @@ next i
 
 ### Condition
 ```ebnf
-condition = expression, ( "<>" | "<" | "<=" | ">" | ">=" ), expression ;
+condition = "!", factor
+            | expression, ( "<>" | "<" | "<=" | ">" | ">=" ), expression ;
 ```
 ```basic
 data val = 1
@@ -104,7 +130,7 @@ digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 ```
 
 ```ebnf
-white space = ? white space characters ? ;
+new line = ? new line characters ? ;
 ```
 
 ```ebnf
