@@ -1,6 +1,7 @@
 # Extended Backus–Naur form
 
-## Links
+The formal language definition for the Basic V containing all of the meta-syntax of the language as well as structured examples of each piece of grammer.
+
 - [Program](#program)
 - [Block](#block)
 - [Statement](#statement)
