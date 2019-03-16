@@ -12,6 +12,8 @@ The formal language definition for the Basic V containing all of the meta-syntax
     - [For Loop](for-loop)
     - [Repeat Until](repeat-until)
     - [While Loop](while-loop)
+- [Stock Functions](#stock-functions)
+    - []()
 - [Condition](#condition)
 - [Expression](#expression)
 - [Term](#term)
@@ -51,7 +53,7 @@ Var_Hellow2 = "World!"
 ### Statement
 ```ebnf
 statement = [ identifier, "=", ( expression | string )
-            | "call", identifier, "(", [ ( expression | string ) ], ")"
+            | function
             | "if", condition, "then",
                 ( new line, block, "endif"
                 | statement )
@@ -164,10 +166,15 @@ var = var << var
 
 ### Factor
 ```ebnf
-factor = identifier | number | "(", expression, ")" ;
+factor = function | identifier | number | "(", expression, ")" ;
 ```
 ```basic
 dim var = 1 << 3 * (16 / 2)
+```
+
+### Function
+```ebnf
+function = "call", `identifier`, "(", [ expression | string, { ",", expression | string } ], ")"
 ```
 
 ### Types
