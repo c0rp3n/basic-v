@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -20,8 +21,8 @@ namespace bv
                 std::vector<std::string> lines;
                 std::string data;
                 {
-                    // @todo reimplement file reading.
-                    data = std::string();
+                    std::ifstream ifs(filepath);
+                    data = std::string(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
                 }
 
                 std::vector<uint64_t> lineLengths;
