@@ -1,5 +1,12 @@
 # Extended Backus–Naur form
 
+## Links
+- [Program](#program)
+- [Block](#block)
+- [Statement](#statement)
+    - [Assignment](#assignment)
+
+
 ### Program
 ```ebnf
 program = { "def", "sub", identifier, "(", [ identifier, { "," identifier } ], ")", new line },
