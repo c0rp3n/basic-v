@@ -22,7 +22,12 @@ namespace bv
                 std::string data;
                 {
                     std::ifstream ifs(filepath);
-                    data = std::string(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
+
+                    ifs.seekg(0, std::ios::end);
+                    data.reserve(ifs.tellg());
+                    ifs.seekg(0, std::ios::beg);
+
+                    data.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
                 }
 
                 std::vector<uint64_t> lineLengths;
