@@ -23,7 +23,7 @@ The formal language definition for the Basic V containing all of the meta-syntax
 ```ebnf
 program = { "def", "sub", identifier, "(", [ identifier, { "," identifier } ], ")", new line },
           block,
-          { "sub", identifier, new line, block, "end", "sub", new line } ;
+          { "sub", identifier, "(", [ identifier, { "," identifier } ], ")", new line, block, "end", "sub", new line } ;
 ```
 ```basic
 def sub PrintVal (num)
