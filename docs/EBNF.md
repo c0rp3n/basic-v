@@ -5,6 +5,17 @@
 - [Block](#block)
 - [Statement](#statement)
     - [Assignment](#assignment)
+    - [Function Call](function-call)
+    - [If Statement](if-statement)
+    - [Switch](switch)
+    - [For Loop](for-loop)
+    - [Repeat Until](repeat-until)
+    - [While Loop](while-loop)
+- [Condition](#condition)
+- [Expression](#expression)
+- [Term](#term)
+- [Factor](#factor)
+- [Types](#types)
 
 
 ### Program
@@ -40,11 +51,14 @@ Var_Hellow2 = "World!"
 ```ebnf
 statement = [ identifier, "=", ( expression | string )
             | "call", identifier, "(", [ ( expression | string ) ], ")"
-            | "for", identifier, "=", ( identifier | integer ), "to", ( identifier | integer ),
-                ( new line, block, "next", identifier
-                | statement )
             | "if", condition, "then",
                 ( new line, block, "endif"
+                | statement )
+            | "case", identifier, "of", new line,
+                { "when", data types, { ",", data types }, ":", block },
+                [ "otherwise", ":", block ], "endcase"
+            | "for", identifier, "=", ( identifier | integer ), "to", ( identifier | integer ),
+                ( new line, block, "next", identifier
                 | statement )
             | "while", condition, "do",
                 ( new line, block, "endwhile"
@@ -66,26 +80,61 @@ call PrintDoubleVal (2, var)
 
 #### If Statement
 ```basic
-if !(var <> 2) then print var
-
-if (var < 2) then
+dim var = "Hello World"
+if var <> "help" then
     ...
 end if
 ```
 
+*Shorthand*
+```basic
+if var < 2 then print var
+```
+
+#### Switch
+```basic
+dim var = 1
+case var of
+    when 0: print "Values: 0"
+    when 1: print "Values: 1"
+    otherwise: pring "Error: val out of range 0,1."
+end case
+```
+
 #### For Loop
 ```basic
-for i = 1 to 10 print i
-
+data var = 5
 for i = 0 to var
     ...
 next i
 ```
 
+*Shorthand*
+```basic
+for i = 1 to 10 print i
+```
+
+#### Repeat Until
+```basic
+dim var = false
+repeat
+    ...
+    done = true
+until done
+```
+
+#### While Loop
+```basic
+dim var = 1
+while var == 1
+    ...
+endwhile
+```
+
 ### Condition
 ```ebnf
 condition = "!", factor
-            | expression, ( "<>" | "<" | "<=" | ">" | ">=" ), expression ;
+            | expression, ( "==" ,"<>" | "<" | "<=" | ">" | ">=" ), expression ;
 ```
 ```basic
 data val = 1
