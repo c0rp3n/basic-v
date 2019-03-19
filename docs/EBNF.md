@@ -12,8 +12,6 @@ The formal language definition for the Basic V containing all of the meta-syntax
     - [For Loop](for-loop)
     - [Repeat Until](repeat-until)
     - [While Loop](while-loop)
-- [Stock Functions](#stock-functions)
-    - []()
 - [Condition](#condition)
 - [Expression](#expression)
 - [Term](#term)
