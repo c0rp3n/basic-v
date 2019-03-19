@@ -1,9 +1,8 @@
 #pragma once
 
+#include <fstream>
 #include <string>
 #include <vector>
-
-#include "../../../Libs/mio/include/mio/mio.hpp"
 
 namespace bv
 {
@@ -22,8 +21,13 @@ namespace bv
                 std::vector<std::string> lines;
                 std::string data;
                 {
-                    mio::mmap_source mmap(filepath);
-                    data = std::string(mmap.data);
+                    std::ifstream ifs(filepath);
+
+                    ifs.seekg(0, std::ios::end);
+                    data.reserve(ifs.tellg());
+                    ifs.seekg(0, std::ios::beg);
+
+                    data.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
                 }
 
                 std::vector<uint64_t> lineLengths;

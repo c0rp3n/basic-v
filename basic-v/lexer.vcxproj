@@ -88,7 +88,7 @@
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)Libs\mio\single_include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
