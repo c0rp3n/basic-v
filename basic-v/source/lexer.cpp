@@ -27,7 +27,6 @@ void generateTokens(std::string line, int lineNumber)
 				iter++;
 			}
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Identifier, value));
-			continue;
 		}
 
 		//If an integer...
@@ -37,7 +36,6 @@ void generateTokens(std::string line, int lineNumber)
 				value = value * 10 + *iter++ - '0';
 			}
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Integer, std::to_string(value)));
-			continue;
 		}
 
 		//If a string literal...
@@ -48,22 +46,56 @@ void generateTokens(std::string line, int lineNumber)
 			}
 			iter++;
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::String, value));
-			continue;
 		}
 
 		//If '=' or '=='...
 		else if (character == '=')
 		{
-			if (iter != line.end() && *(++iter) == '=')
+			if (iter != line.end() && *iter++ == '=')
 			{
 				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Equal));
-				iter++;
 			}
 			else
 			{
 				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Assign));
 			}
-			continue;
+		}
+
+		//If '<', '<>', or '<='...
+		else if (character == '<')
+		{
+			if (iter != line.end() && *iter == '>')
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::NotEqual));
+			}
+			else if (iter != line.end() && *iter == '=')
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::LessThanOrEqual));
+			}
+			else
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::LessThan));
+			}
+			iter++;
+		}
+
+		//If '>' or '>='
+		else if (character == '>')
+		{
+			if (iter != line.end() && *iter++ == '=')
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::GreaterThanOrEqual));
+			}
+			else
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::GreaterThan));
+			}
+		}
+
+		//If '!'
+		else if (character == '!')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Not));
 		}
 	}
 }
