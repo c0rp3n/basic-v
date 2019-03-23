@@ -22,9 +22,11 @@ void generateTokens(std::string line, int lineNumber)
         iter++;
 
         //If a keywors or an identifier...
-        if ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_')) {
+        if ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_'))
+        {
             std::string value(1, character);
-            while (iter != line.end() && ((*iter >= 'a' && *iter <= 'z') || (*iter >= 'A' && *iter <= 'Z') || (*iter >= '0' && *iter <= '9') || (*iter == '_'))) {
+            while (iter != line.end() && ((*iter >= 'a' && *iter <= 'z') || (*iter >= 'A' && *iter <= 'Z') || (*iter >= '0' && *iter <= '9') || (*iter == '_')))
+            {
                 value.append(1, *iter++);
             }
 
@@ -99,7 +101,8 @@ void generateTokens(std::string line, int lineNumber)
                 std::string value2 = "";
                 if (*tempIter++ == ' ')
                 {
-                    while (tempIter != line.end() && ((*tempIter >= 'a' && *tempIter <= 'z') || (*tempIter >= 'A' && *tempIter <= 'Z'))) {
+                    while (tempIter != line.end() && ((*tempIter >= 'a' && *tempIter <= 'z') || (*tempIter >= 'A' && *tempIter <= 'Z')))
+                    {
                         value2.append(1, *tempIter++);
                     }
                 }
@@ -152,7 +155,8 @@ void generateTokens(std::string line, int lineNumber)
         else if (character == '"')
         {
             std::string value(1, *iter++);
-            while (iter != line.end() && *iter != '"') {
+            while (iter != line.end() && *iter != '"')
+            {
                 value.append(1, *iter++);
             }
             iter++;
