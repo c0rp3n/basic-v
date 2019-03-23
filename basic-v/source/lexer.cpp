@@ -21,14 +21,11 @@ void generateTokens(std::string line, int lineNumber)
 		int position = iter - line.begin();
 		iter++;
 
-
-
 		//If a keywors or an identifier...
 		if ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_')) {
 			std::string value(1, character);
 			while (iter != line.end() && ((*iter >= 'a' && *iter <= 'z') || (*iter >= 'A' && *iter <= 'Z') || (*iter >= '0' && *iter <= '9') || (*iter == '_'))) {
-				value.append(1, *iter);
-				iter++;
+				value.append(1, *iter++);
 			}
 
 			// Look up whether or not the value matched predefined keywords.
@@ -103,8 +100,7 @@ void generateTokens(std::string line, int lineNumber)
 				if (*tempIter++ == ' ')
 				{
 					while (tempIter != line.end() && ((*tempIter >= 'a' && *tempIter <= 'z') || (*tempIter >= 'A' && *tempIter <= 'Z'))) {
-						value2.append(1, *tempIter);
-						tempIter++;
+						value2.append(1, *tempIter++);
 					}
 				}
 
@@ -131,22 +127,30 @@ void generateTokens(std::string line, int lineNumber)
 
 		}
 
-		//If an integer...
-		else if ((character >= '0' && character <= '9') || (character == '-' && *iter >= '0' && *iter <= '9')) {
-			bool negative = character == '-';
-			int value = negative ? *iter++ - '0' : character - '0';
-			while (iter != line.end() && *iter >= '0' && *iter <= '9') {
-				value = value * 10 + *iter++ - '0';
-			}
-			if (negative)
+		//If an integer or a real number...
+		else if ((character >= '0' && character <= '9') || (character == '-' && *iter >= '0' && *iter <= '9'))
+		{
+			std::string value(1, character);
+
+			while (iter != line.end() && *iter >= '0' && *iter <= '9' || (iter != line.end() && *iter == '.' && *(iter + 1) >= '0' && *(iter + 1) <= '9'))
 			{
-				value = 0 - value;
+				value.append(1, *iter++);
 			}
-			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Integer, std::to_string(value)));
+
+			//If the number contains a '.', it's a real. Otherwise, an integer.
+			if (value.find('.') != std::string::npos)
+			{
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Real, value));
+			}
+			else
+			{
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Integer, value));
+			}
 		}
 
 		//If a string literal...
-		else if (character == '"') {
+		else if (character == '"')
+		{
 			std::string value(1, *iter++);
 			while (iter != line.end() && *iter != '"') {
 				value.append(1, *iter++);
@@ -281,8 +285,6 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-
-
 	int lineNumber = 0;
 	for (std::string line : lines)
 	{
@@ -312,6 +314,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
