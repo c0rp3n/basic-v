@@ -132,9 +132,14 @@ void generateTokens(std::string line, int lineNumber)
 
 		//If an integer...
 		else if ((character >= '0' && character <= '9') || (character == '-' && *iter >= '0' && *iter <= '9')) {
-			int value = (character == '-') ? 0 - (character - '0') : character - '0';
+			bool negative = character == '-';
+			int value = negative ? *iter++ - '0' : character - '0';
 			while (iter != line.end() && *iter >= '0' && *iter <= '9') {
 				value = value * 10 + *iter++ - '0';
+			}
+			if (negative)
+			{
+				value = 0 - value;
 			}
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Integer, std::to_string(value)));
 		}
