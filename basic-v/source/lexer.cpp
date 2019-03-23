@@ -22,18 +22,116 @@ void generateTokens(std::string line, int lineNumber)
 
 
 
-		//If an identifier...
+		//If a keywors or an identifier...
 		if ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_')) {
 			std::string value(1, character);
 			while (iter != line.end() && ((*iter >= 'a' && *iter <= 'z') || (*iter >= 'A' && *iter <= 'Z') || (*iter >= '0' && *iter <= '9') || (*iter == '_'))) {
 				value.append(1, *iter);
 				iter++;
 			}
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Identifier, value));
+
+			// Look up whether or not the value matched predefined keywords.
+			// If so, add the keyword to the token vector
+			// If not, it is a custom identifier (see else)
+			if (value == "false")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::False));
+			}
+			else if (value == "true")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::True));
+			}
+			else if (value == "if")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::If));
+			}
+			else if (value == "then")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Then));
+			}
+			else if (value == "case")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Case));
+			}
+			else if (value == "of")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Of));
+			}
+			else if (value == "when")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::When));
+			}
+			else if (value == "otherwise")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Otherwise));
+			}
+			else if (value == "for")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::For));
+			}
+			else if (value == "to")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::To));
+			}
+			else if (value == "next")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Next));
+			}
+			else if (value == "repeat")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Repeat));
+			}
+			else if (value == "until")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Until));
+			}
+			else if (value == "while")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::While));
+			}
+			else if (value == "endwhile")
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndWhile));
+			}
+			else if (value == "end")
+			{
+				//If the keyword 'end' matches, look ahead another keyword to see if we need to match 'end if' or 'end case'
+
+				std::string::iterator tempIter = iter;
+				std::string value2 = "";
+				if (*tempIter++ == ' ')
+				{
+					while (tempIter != line.end() && ((*tempIter >= 'a' && *tempIter <= 'z') || (*tempIter >= 'A' && *tempIter <= 'Z'))) {
+						value2.append(1, *tempIter);
+						tempIter++;
+					}
+				}
+
+				if (value2 == "if")
+				{
+					iter = tempIter;
+					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndIf));
+				}
+				else if (value2 == "case")
+				{
+					iter = tempIter;
+					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndCase));
+				}
+				else
+				{
+					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::End));
+				}
+			}
+			else
+			{
+				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Identifier, value));
+			}
+
+
 		}
 
 		//If an integer...
-		else if (character >= '0' && character <= '9' || character == '-' && *iter >= '0' && *iter <= '9') {
+		else if ((character >= '0' && character <= '9') || (character == '-' && *iter >= '0' && *iter <= '9')) {
 			int value = (character == '-') ? 0 - (character - '0') : character - '0';
 			while (iter != line.end() && *iter >= '0' && *iter <= '9') {
 				value = value * 10 + *iter++ - '0';
@@ -70,9 +168,22 @@ void generateTokens(std::string line, int lineNumber)
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Addition));
 		}
 
+		//If '-'...
 		else if (character == '-')
 		{
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Subtraction));
+		}
+
+		//If '*'...
+		else if (character == '*')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Multiply));
+		}
+
+		//If '/'...
+		else if (character == '/')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Divide));
 		}
 
 		//If '<', '<>', or '<='...
@@ -111,6 +222,24 @@ void generateTokens(std::string line, int lineNumber)
 		{
 			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Not));
 		}
+
+		//If '('...
+		else if (character == '(')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::OpenBracket));
+		}
+
+		//If ')'...
+		else if (character == ')')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::CloseBracket));
+		}
+
+		//If ':'...
+		else if (character == ':')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Colon));
+		}
 	}
 }
 
@@ -140,7 +269,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	filepath = "example.txt";
+	filepath = "C:\\Users\\Sam Conran\\Programming\\C++\\basic-v\\basic-v-x64\\Debug\\example.txt";
 
 	std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
 	if (lines.size() < 1)
@@ -157,10 +286,10 @@ int main(int argc, char* argv[])
 
 	system("pause");
 
-	
+
 	/*
 	<===== Commenting out for now, just for simplicity of testing the rules =====>
-	
+
 	int threadCount = std::thread::hardware_concurrency();
 	int linesPerThread = lines.size() / threadCount;
 	std::vector<std::thread> threads;
@@ -174,7 +303,7 @@ int main(int argc, char* argv[])
 	{
 		t.join();
 	}
-	
+
 	*/
 
 
