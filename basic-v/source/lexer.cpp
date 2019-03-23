@@ -269,8 +269,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	filepath = "C:\\Users\\Sam Conran\\Programming\\C++\\basic-v\\basic-v-x64\\Debug\\example.txt";
-
 	std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
 	if (lines.size() < 1)
 	{
@@ -283,8 +281,6 @@ int main(int argc, char* argv[])
 		lineNumber++;
 		generateTokens(line, lineNumber);
 	}
-
-	system("pause");
 
 
 	/*
