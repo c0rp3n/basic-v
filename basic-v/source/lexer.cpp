@@ -19,6 +19,9 @@ void generateTokens(std::string line, int lineNumber)
 	{
 		character = *iter;
 		iter++;
+
+
+
 		//If an identifier...
 		if ((character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') || (character == '_')) {
 			std::string value(1, character);
@@ -30,8 +33,8 @@ void generateTokens(std::string line, int lineNumber)
 		}
 
 		//If an integer...
-		else if (character >= '0' && character <= '9') {
-			int value = character - '0';
+		else if (character >= '0' && character <= '9' || character == '-' && *iter >= '0' && *iter <= '9') {
+			int value = (character == '-') ? 0 - (character - '0') : character - '0';
 			while (iter != line.end() && *iter >= '0' && *iter <= '9') {
 				value = value * 10 + *iter++ - '0';
 			}
@@ -59,6 +62,17 @@ void generateTokens(std::string line, int lineNumber)
 			{
 				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Assign));
 			}
+		}
+
+		//If '+'...
+		else if (character == '+')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Addition));
+		}
+
+		else if (character == '-')
+		{
+			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Subtraction));
 		}
 
 		//If '<', '<>', or '<='...
@@ -125,6 +139,8 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
+
+	filepath = "example.txt";
 
 	std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
 	if (lines.size() < 1)
