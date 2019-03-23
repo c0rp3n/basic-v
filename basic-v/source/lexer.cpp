@@ -18,6 +18,7 @@ void generateTokens(std::string line, int lineNumber)
 	while (iter < line.end())
 	{
 		character = *iter;
+		int position = iter - line.begin();
 		iter++;
 
 
@@ -35,63 +36,63 @@ void generateTokens(std::string line, int lineNumber)
 			// If not, it is a custom identifier (see else)
 			if (value == "false")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::False));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::False));
 			}
 			else if (value == "true")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::True));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::True));
 			}
 			else if (value == "if")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::If));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::If));
 			}
 			else if (value == "then")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Then));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Then));
 			}
 			else if (value == "case")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Case));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Case));
 			}
 			else if (value == "of")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Of));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Of));
 			}
 			else if (value == "when")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::When));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::When));
 			}
 			else if (value == "otherwise")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Otherwise));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Otherwise));
 			}
 			else if (value == "for")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::For));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::For));
 			}
 			else if (value == "to")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::To));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::To));
 			}
 			else if (value == "next")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Next));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Next));
 			}
 			else if (value == "repeat")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Repeat));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Repeat));
 			}
 			else if (value == "until")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Until));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Until));
 			}
 			else if (value == "while")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::While));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::While));
 			}
 			else if (value == "endwhile")
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndWhile));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::EndWhile));
 			}
 			else if (value == "end")
 			{
@@ -110,21 +111,21 @@ void generateTokens(std::string line, int lineNumber)
 				if (value2 == "if")
 				{
 					iter = tempIter;
-					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndIf));
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::EndIf));
 				}
 				else if (value2 == "case")
 				{
 					iter = tempIter;
-					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::EndCase));
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::EndCase));
 				}
 				else
 				{
-					tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::End));
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
 				}
 			}
 			else
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Identifier, value));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Identifier, value));
 			}
 
 
@@ -141,7 +142,7 @@ void generateTokens(std::string line, int lineNumber)
 			{
 				value = 0 - value;
 			}
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Integer, std::to_string(value)));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Integer, std::to_string(value)));
 		}
 
 		//If a string literal...
@@ -151,7 +152,7 @@ void generateTokens(std::string line, int lineNumber)
 				value.append(1, *iter++);
 			}
 			iter++;
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::String, value));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::String, value));
 		}
 
 		//If '=' or '=='...
@@ -159,36 +160,36 @@ void generateTokens(std::string line, int lineNumber)
 		{
 			if (iter != line.end() && *iter++ == '=')
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Equal));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Equal));
 			}
 			else
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Assign));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Assign));
 			}
 		}
 
 		//If '+'...
 		else if (character == '+')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Addition));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Addition));
 		}
 
 		//If '-'...
 		else if (character == '-')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Subtraction));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Subtraction));
 		}
 
 		//If '*'...
 		else if (character == '*')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Multiply));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Multiply));
 		}
 
 		//If '/'...
 		else if (character == '/')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Divide));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Divide));
 		}
 
 		//If '<', '<>', or '<='...
@@ -196,15 +197,15 @@ void generateTokens(std::string line, int lineNumber)
 		{
 			if (iter != line.end() && *iter == '>')
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::NotEqual));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::NotEqual));
 			}
 			else if (iter != line.end() && *iter == '=')
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::LessThanOrEqual));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::LessThanOrEqual));
 			}
 			else
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::LessThan));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::LessThan));
 			}
 			iter++;
 		}
@@ -214,36 +215,36 @@ void generateTokens(std::string line, int lineNumber)
 		{
 			if (iter != line.end() && *iter++ == '=')
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::GreaterThanOrEqual));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::GreaterThanOrEqual));
 			}
 			else
 			{
-				tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::GreaterThan));
+				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::GreaterThan));
 			}
 		}
 
 		//If '!'
 		else if (character == '!')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Not));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Not));
 		}
 
 		//If '('...
 		else if (character == '(')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::OpenBracket));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::OpenBracket));
 		}
 
 		//If ')'...
 		else if (character == ')')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::CloseBracket));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::CloseBracket));
 		}
 
 		//If ':'...
 		else if (character == ':')
 		{
-			tokens.push_back(bv::Token(lineNumber, 0, bv::Lexeme::Colon));
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Colon));
 		}
 	}
 }
@@ -280,13 +281,14 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+
+
 	int lineNumber = 0;
 	for (std::string line : lines)
 	{
 		lineNumber++;
 		generateTokens(line, lineNumber);
 	}
-
 
 	/*
 	<===== Commenting out for now, just for simplicity of testing the rules =====>
