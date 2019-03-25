@@ -13,6 +13,7 @@
     <ClInclude Include="source\IO\FileReader.hpp">
       <Filter>IO</Filter>
     </ClInclude>
+    <ClInclude Include="source\Tokeniser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Types">

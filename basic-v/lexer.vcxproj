@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\IO\FileReader.hpp" />
+    <ClInclude Include="source\Tokeniser.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
     <ClInclude Include="source\Types\Lexeme.hpp" />
   </ItemGroup>

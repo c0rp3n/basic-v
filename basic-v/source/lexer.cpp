@@ -34,19 +34,19 @@ int main(int argc, char* argv[])
         }
     }
 
-    Tokeniser tokeniser;
-
     std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
     if (lines.size() < 1)
     {
         return 0;
     }
 
+    std::vector<bv::Token> tokens;
+
     int lineNumber = 0;
     for (std::string line : lines)
     {
         lineNumber++;
-        tokeniser.TokeniseLine(line, lineNumber);
+        bv::Tokeniser::TokeniseLine(line, lineNumber, tokens);
     }
 
     /*
