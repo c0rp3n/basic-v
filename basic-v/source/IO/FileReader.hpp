@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,7 @@ namespace bv
                 std::ifstream in(filepath);
 
                 // Check if object is valid
-                if (!in)
+                if (in.fail())
                 {
                     std::cerr << "Cannot open the File : " << filepath << std::endl;
                 }
