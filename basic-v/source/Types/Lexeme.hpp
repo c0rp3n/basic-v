@@ -294,6 +294,10 @@ namespace bv
         /// </summary>
         Sring$,
         /// <summary>
+        /// Keyword Sub, indicates definition of a function
+        /// </summary>
+        Sub,
+        /// <summary>
         /// Function Sum, returns the sum of an array or all of the passed values.
         /// </summary>
         Sum,

@@ -19,46 +19,25 @@ namespace bv
             static std::vector<std::string> ReadLines(std::string filepath)
             {
                 std::vector<std::string> lines;
-                std::string data;
+                // Open the File
+                std::ifstream in(filepath.c_str());
+
+                // Check if object is valid
+                if (!in)
                 {
-                    std::ifstream ifs(filepath);
-
-                    ifs.seekg(0, std::ios::end);
-                    data.reserve(ifs.tellg());
-                    ifs.seekg(0, std::ios::beg);
-
-                    data.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+                    std::cerr << "Cannot open the File : " << filepath << std::endl;
                 }
 
-                std::vector<uint64_t> lineLengths;
+                std::string str;
+                // Read the next line from File untill it reaches the end.
+                while (std::getline(in, str))
                 {
-                    uint64_t lineLength = 0;
-                    for (const char& value : data)
-                    {
-                        if (value == '\n')
-                        {
-                            lineLengths.push_back(lineLength);
-                            lineLength = 0;
-                        }
-                        else
-                        {
-                            lineLength++;
-                        }
-                    }
+                    // Line contains string of length > 0 then save it in vector
+                    if (str.size() > 0)
+                        lines.push_back(str);
                 }
-
-                {
-                    uint64_t pointer = 0;
-                    for (uint64_t& i : lineLengths)
-                    {
-                        const std::string line = data.substr(pointer, i);
-                        lines.push_back(line);
-
-                        pointer += i;
-                    }
-                }
-
-                lineLengths.clear();
+                //Close The File
+                in.close();
 
                 return lines;
             }

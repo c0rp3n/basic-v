@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "IO/FileReader.hpp"
-#include "Types/Lexeme.hpp"
-#include "Types/Token.hpp"
+#include "Tokeniser.hpp"
+
+
 
 int main(int argc, char* argv[])
 {
@@ -39,6 +40,18 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    std::vector<bv::Token> tokens;
+
+    int lineNumber = 0;
+    for (std::string line : lines)
+    {
+        lineNumber++;
+        bv::Tokeniser::TokeniseLine(line, lineNumber, tokens);
+    }
+
+    /*
+    <===== Commenting out for now, just for simplicity of testing the rules =====>
+
     int threadCount = std::thread::hardware_concurrency();
     int linesPerThread = lines.size() / threadCount;
     std::vector<std::thread> threads;
@@ -52,6 +65,9 @@ int main(int argc, char* argv[])
     {
         t.join();
     }
+
+    */
+
 
     return 0;
 }
