@@ -97,32 +97,7 @@ public:
 				}
 				else if (value == "end")
 				{
-					//If the keyword 'end' matches, look ahead another keyword to see if we need to match 'end if' or 'end case'
-
-					std::string::iterator tempIter = iter;
-					std::string value2 = "";
-					if (*tempIter++ == ' ')
-					{
-						while (tempIter != line.end() && ((*tempIter >= 'a' && *tempIter <= 'z') || (*tempIter >= 'A' && *tempIter <= 'Z')))
-						{
-							value2.append(1, *tempIter++);
-						}
-					}
-
-					if (value2 == "if")
-					{
-						iter = tempIter;
-						tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::EndIf));
-					}
-					else if (value2 == "case")
-					{
-						iter = tempIter;
-						tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::EndCase));
-					}
-					else
-					{
-						tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
-					}
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
 				}
 				else
 				{
