@@ -1,0 +1,7 @@
+data constantInteger = 3
+data constantFloat = 3.142
+data constantString = "3.142"
+
+constantInteger = 1
+constantFloat = 1.0
+constantString = "1.0"
