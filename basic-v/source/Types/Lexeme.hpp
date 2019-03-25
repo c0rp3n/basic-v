@@ -10,17 +10,17 @@ namespace bv
     enum struct Lexeme : uint64_t
     {
         /// <summary>
-        /// Data Type String, a squence of chars surround by "".
+        /// Data Type Interger, a seriries of numeric chars.
         /// </summary>
-        String,
+        Integer,
         /// <summary>
         /// Data Type Real, two sets of numbers seperated by a period.
         /// </summary>
         Real,
         /// <summary>
-        /// Data Type Interger, a seriries of numeric chars.
+        /// Data Type String, a squence of chars surround by "".
         /// </summary>
-        Integer,
+        String,
         /// <summary>
         /// Variable or Section Identifier, starts with an alphabetic char then can be followed by numbers or underscores.
         /// </summary>
@@ -54,6 +54,10 @@ namespace bv
         /// </summary>
         CloseBrace,
         /// <summary>
+        /// Syntax New Line ('\n').
+        /// </summary>
+        NewLine,
+        /// <summary>
         /// Operator Assign ('='), assigns the rhs to the variable on the lhs.
         /// </summary>
         Assign,
@@ -78,7 +82,7 @@ namespace bv
         /// </summary>
         Equal,
         /// <summary>
-        /// Operator Equal to ('&lt;&gt;'), compare the lhs too the rhs.
+        /// Operator Not Equal to ('&gt;&lt;'), compare the lhs too the rhs.
         /// </summary>
         NotEqual,
         /// <summary>
@@ -118,6 +122,10 @@ namespace bv
         /// </summary>
         Data,
         /// <summary>
+        /// Keyword Dim, declares the start of a mutable piece of data, must be the first thing on a program line.
+        /// </summary>
+        Dim,
+        /// <summary>
         /// Keyword Define, pre declares a function, must be the first thing on a program line.
         /// </summary>
         Def,
@@ -142,7 +150,7 @@ namespace bv
         /// </summary>
         EndIf,
         /// <summary>
-        /// Keyword End If, marks an end of a multi line if clause.
+        /// Keyword End While, marks an end of a multi line while loop.
         /// </summary>
         EndWhile,
         /// <summary>
@@ -230,7 +238,7 @@ namespace bv
         /// </summary>
         Or,
         /// <summary>
-        /// Keyword Otherwise, the optional default case of a case statement. 
+        /// Keyword Otherwise, the optional default case of a case statement.
         /// </summary>
         Otherwise,
         /// <summary>
