@@ -99,9 +99,25 @@ public:
 				{
 					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
 				}
+				else if (value == "dim")
+				{
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Dim));
+				}
 				else if (value == "data")
 				{
 					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Data));
+				}
+				else if (value == "def")
+				{
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Def));
+				}
+				else if (value == "sub")
+				{
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Sub));
+				}
+				else if (value == "call")
+				{
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Call));
 				}
 				else
 				{
