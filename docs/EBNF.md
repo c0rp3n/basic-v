@@ -2,21 +2,23 @@
 
 The formal language definition for the Basic V containing all of the meta-syntax of the language as well as structured examples of each piece of grammer.
 
-- [Program](#program)
-- [Block](#block)
-- [Statement](#statement)
-    - [Assignment](#assignment)
-    - [Function Call](function-call)
-    - [If Statement](if-statement)
-    - [Switch](switch)
-    - [For Loop](for-loop)
-    - [Repeat Until](repeat-until)
-    - [While Loop](while-loop)
-- [Condition](#condition)
-- [Expression](#expression)
-- [Term](#term)
-- [Factor](#factor)
-- [Types](#types)
+- [Extended Backus–Naur form](#extended-backus%E2%80%93naur-form)
+    - [Program](#program)
+    - [Block](#block)
+    - [Statement](#statement)
+      - [Assignment](#assignment)
+      - [Function Call](#function-call)
+      - [If Statement](#if-statement)
+      - [Switch](#switch)
+      - [For Loop](#for-loop)
+      - [Repeat Until](#repeat-until)
+      - [While Loop](#while-loop)
+    - [Condition](#condition)
+    - [Expression](#expression)
+    - [Term](#term)
+    - [Factor](#factor)
+    - [Function](#function)
+    - [Types](#types)
 
 
 ### Program
@@ -160,6 +162,7 @@ term = factor, { ( "*" | "/" | "<<" | ">>" ), factor } ;
 dim var = 2 * 3
 var = var / 2
 var = var << var
+var = var + call SomeFunction(2)
 ```
 
 ### Factor
@@ -173,6 +176,10 @@ dim var = 1 << 3 * (16 / 2)
 ### Function
 ```ebnf
 function = "call", `identifier`, "(", [ expression | string, { ",", expression | string } ], ")"
+```
+```basic
+call Void ()
+call PrintDoubleVal (2, var)
 ```
 
 ### Types
