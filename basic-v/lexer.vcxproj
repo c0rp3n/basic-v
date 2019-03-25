@@ -98,6 +98,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+    <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

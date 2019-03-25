@@ -77,6 +77,11 @@
     <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
