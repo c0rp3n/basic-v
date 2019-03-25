@@ -55,16 +55,16 @@ Var_Hellow2 = "World!"
 statement = [ identifier, "=", ( expression | string )
             | function
             | "if", condition, "then",
-                ( new line, block, "endif"
+                ( new line, block, "end", "if"
                 | statement )
             | "case", identifier, "of", new line,
                 { "when", data types, { ",", data types }, ":", block },
-                [ "otherwise", ":", block ], "endcase"
+                [ "otherwise", ":", block ], "end", "case"
             | "for", identifier, "=", ( identifier | integer ), "to", ( identifier | integer ),
                 ( new line, block, "next", identifier
                 | statement )
             | "while", condition, "do",
-                ( new line, block, "endwhile"
+                ( new line, block, "end", "while"
                 | statement )
             ] ;
 ```
@@ -131,7 +131,7 @@ until done
 dim var = 1
 while var == 1
     ...
-endwhile
+end while
 ```
 
 ### Condition
