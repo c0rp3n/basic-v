@@ -99,6 +99,10 @@ public:
 				{
 					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
 				}
+				else if (value == "data")
+				{
+					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Data));
+				}
 				else
 				{
 					tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Identifier, value));
@@ -230,6 +234,12 @@ public:
 			else if (character == ':')
 			{
 				tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Colon));
+			}
+
+			//If ','...
+			else if (character == ',')
+			{
+			tokens.push_back(bv::Token(lineNumber, position, bv::Lexeme::Comma));
 			}
 		}
 	}
