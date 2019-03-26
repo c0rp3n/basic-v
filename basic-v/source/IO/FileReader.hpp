@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -20,10 +21,10 @@ namespace bv
             {
                 std::vector<std::string> lines;
                 // Open the File
-                std::ifstream in(filepath.c_str());
+                std::ifstream in(filepath);
 
                 // Check if object is valid
-                if (!in)
+                if (in.fail())
                 {
                     std::cerr << "Cannot open the File : " << filepath << std::endl;
                 }
@@ -32,9 +33,7 @@ namespace bv
                 // Read the next line from File untill it reaches the end.
                 while (std::getline(in, str))
                 {
-                    // Line contains string of length > 0 then save it in vector
-                    if (str.size() > 0)
-                        lines.push_back(str);
+                    lines.push_back(str);
                 }
                 //Close The File
                 in.close();
