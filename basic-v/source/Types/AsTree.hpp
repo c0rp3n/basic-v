@@ -26,14 +26,14 @@ namespace bv
             this->right = nullptr;
         }
 
-        AsTree(std::vector<Token> tokens, AsTree* left)
+        AsTree(std::vector<Token> tokens, AsTree* right)
         {
             this->tokens = tokens;
             this->left = left;
             this->right = nullptr;
         }
 
-        AsTree(std::vector<Token> tokens, AsTree* left, AsTree* right)
+        AsTree(std::vector<Token> tokens, AsTree* right, AsTree* left)
         {
             this->tokens = tokens;
             this->left = left;
