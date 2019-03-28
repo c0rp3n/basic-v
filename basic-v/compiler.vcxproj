@@ -21,6 +21,12 @@
   <ItemGroup>
     <ClCompile Include="source\compiler.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Compiler\CodeGenerator.hpp" />
+    <ClInclude Include="source\Types\AsTree.hpp" />
+    <ClInclude Include="source\Types\Lexeme.hpp" />
+    <ClInclude Include="source\Types\Token.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{5ED6081F-3BC4-4233-8B6C-E65422B7A2FB}</ProjectGuid>
@@ -73,13 +79,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\$(SolutionName)-$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionName)-$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
