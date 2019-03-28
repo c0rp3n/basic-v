@@ -8,36 +8,48 @@ namespace bv
 {
     struct AsTree
     {
-        AsTree* left;
-        AsTree* right;
+	public:
+		struct Node;
 
-        std::vector<Token> tokens;
+		std::vector<Node> tree;
 
-        AsTree()
-        {
-            this->left = nullptr;
-            this->right = nullptr;
-        }
+		AsTree()
+		{
+		}
 
-        AsTree(std::vector<Token> tokens)
-        {
-            this->tokens = tokens;
-            this->left = nullptr;
-            this->right = nullptr;
-        }
+		struct Node
+		{
+			Node* left;
+			Node* right;
 
-        AsTree(std::vector<Token> tokens, AsTree* right)
-        {
-            this->tokens = tokens;
-            this->left = left;
-            this->right = nullptr;
-        }
+			std::vector<Token> tokens;
 
-        AsTree(std::vector<Token> tokens, AsTree* right, AsTree* left)
-        {
-            this->tokens = tokens;
-            this->left = left;
-            this->right = right;
-        }
+			Node()
+			{
+				this->left = nullptr;
+				this->right = nullptr;
+			}
+
+			Node(std::vector<Token> tokens)
+			{
+				this->tokens = tokens;
+				this->left = nullptr;
+				this->right = nullptr;
+			}
+
+			Node(std::vector<Token> tokens, Node* right)
+			{
+				this->tokens = tokens;
+				this->left = left;
+				this->right = nullptr;
+			}
+
+			Node(std::vector<Token> tokens, Node* right, Node* left)
+			{
+				this->tokens = tokens;
+				this->left = left;
+				this->right = right;
+			}
+		};
     };
 }
