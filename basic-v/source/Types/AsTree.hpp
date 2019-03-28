@@ -19,36 +19,25 @@ namespace bv
 
 		struct Node
 		{
-			Node* left;
-			Node* right;
+			Node* fork;
+            Node* expression;
+			Node* flow;
 
 			std::vector<Token> tokens;
 
 			Node()
 			{
-				this->left = nullptr;
-				this->right = nullptr;
+				this->fork = nullptr;
+                this->expression = nullptr;
+				this->flow = nullptr;
 			}
 
-			Node(std::vector<Token> tokens)
+			Node(std::vector<Token> tokens, Node* flow, Node* expression, Node* fork)
 			{
 				this->tokens = tokens;
-				this->left = nullptr;
-				this->right = nullptr;
-			}
-
-			Node(std::vector<Token> tokens, Node* right)
-			{
-				this->tokens = tokens;
-				this->left = left;
-				this->right = nullptr;
-			}
-
-			Node(std::vector<Token> tokens, Node* right, Node* left)
-			{
-				this->tokens = tokens;
-				this->left = left;
-				this->right = right;
+				this->fork = fork;
+                this->expression = expression;
+				this->flow = flow;
 			}
 		};
     };
