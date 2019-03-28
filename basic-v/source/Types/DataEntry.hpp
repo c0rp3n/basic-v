@@ -17,19 +17,22 @@ namespace bv
 
 		std::string identifier;
 		Type type;
+		bool imutable;
 		std::string value;
 
 		DataEntry()
 		{
 			this->identifier = "";
 			this->type = Type::None;
+			this->imutable = true;
 			this->value = "";
 		}
 
-		DataEntry(std::string identifier, Type type, std::string value)
+		DataEntry(std::string identifier, Type type, bool imutable, std::string value)
 		{
 			this->identifier = identifier;
 			this->type = type;
+			this->imutable = imutable;
 			this->value = value;
 		}
 	};
