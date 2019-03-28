@@ -20,10 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\lexer.cpp" />
+    <ClCompile Include="source\Lexer\Tokeniser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\IO\FileReader.hpp" />
-    <ClInclude Include="source\Tokeniser.hpp" />
+    <ClInclude Include="source\Lexer\Tokeniser.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
     <ClInclude Include="source\Types\Lexeme.hpp" />
   </ItemGroup>

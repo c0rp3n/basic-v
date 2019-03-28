@@ -49,9 +49,6 @@ int main(int argc, char* argv[])
         bv::Tokeniser::TokeniseLine(line, lineNumber, tokens);
     }
 
-    /*
-    <===== Commenting out for now, just for simplicity of testing the rules =====>
-
     int threadCount = std::thread::hardware_concurrency();
     int linesPerThread = lines.size() / threadCount;
     std::vector<std::thread> threads;
@@ -65,8 +62,6 @@ int main(int argc, char* argv[])
     {
         t.join();
     }
-
-    */
 
 
     return 0;
