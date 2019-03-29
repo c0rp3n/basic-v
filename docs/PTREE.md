@@ -5,19 +5,25 @@ In the diagrams nodes are represented by rectangles. Each node can be connect to
 
 _Node Layout_
 
-![Node](as-tree/node.svg)
+![Node](ptree/node.svg)
 
 ## Expression
 In the diagrams expressions are represented by ellipses. Each expression connects to two other expression but also stores a series of tokens genreally the operator being applied else it shall a the value to be used.
 
 _Expression Layout_
 
-![Expression](as-tree/expression.svg)
+![Expression](ptree/expression.svg)
 
 ## Trees
 
 ### Assignment example
+Here is a simple example of basic five and the example of the generated parse tree.
+
+_Code:_
 ```basic
 dim x = 1 + (2 * 3)
 ```
-![Example Tree 1](as-tree/tree-example-1.svg)
+
+_Tree:_
+
+![Example Tree 1](ptree/tree-example-1.svg)
