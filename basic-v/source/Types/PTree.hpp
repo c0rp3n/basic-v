@@ -6,7 +6,7 @@
 
 namespace bv
 {
-    struct AsTree
+    struct PTree
     {
 	public:
 		struct Node;
@@ -17,7 +17,7 @@ namespace bv
 
         std::vector<Node*> trees;
 
-		AsTree()
+		PTree()
 		{
 		}
 
