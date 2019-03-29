@@ -2,7 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="source\lexer.cpp" />
-    <ClCompile Include="source\Lexer\Tokeniser.cpp" />
+    <ClCompile Include="source\Lexer\Tokeniser.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Types\Token.hpp">

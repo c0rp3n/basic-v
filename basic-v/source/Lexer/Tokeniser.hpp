@@ -5,16 +5,13 @@
 #include "../Types/Token.hpp"
 
 
-namespace bv
+namespace bv::Lexer
 {
-    namespace Lexer
+    class Tokeniser
     {
-        class Tokeniser
-        {
-        public:
-            static void TokeniseLines(std::vector<std::string>* lines, int lineNumber, std::vector<bv::Token> *tokens);
+    public:
+        static void TokeniseLines(std::vector<std::string>::iterator start, std::vector<std::string>::iterator end, int startLine, std::vector<bv::Token>* tokens);
 
-            static void TokeniseLine(std::string line, int lineNumber, std::vector<bv::Token> *tokens);
-        };
-    }
+        static Token TokeniseLine(std::string* line, int lineNumber);
+    };
 }
