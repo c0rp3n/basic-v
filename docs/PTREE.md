@@ -1,4 +1,4 @@
-# Abstract Syntax Tree
+# Parse Tree
 
 ![Node](as-tree/node.svg)
 
