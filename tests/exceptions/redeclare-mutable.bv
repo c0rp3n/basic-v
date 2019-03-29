@@ -1,0 +1,7 @@
+dim mutableInterger = 1
+dim mutableFloat = 1.0
+dim mutableString = "1.00"
+
+dim mutableInterger = 3
+dim mutableFloat = 3.142
+dim mutableString = "3.142"
