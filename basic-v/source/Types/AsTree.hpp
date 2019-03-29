@@ -10,8 +10,12 @@ namespace bv
     {
 	public:
 		struct Node;
+        struct Expression;
 
-		std::vector<Node> tree;
+		std::vector<Node> nodes;
+        std::vector<Expression> expressions;
+
+        std::vector<Node*> trees;
 
 		AsTree()
 		{
@@ -19,8 +23,8 @@ namespace bv
 
 		struct Node
 		{
-			Node* fork;
-            Node* expression;
+            Node* fork;
+            Expression* expression;
 			Node* flow;
 
 			std::vector<Token> tokens;
@@ -32,7 +36,7 @@ namespace bv
 				this->flow = nullptr;
 			}
 
-			Node(std::vector<Token> tokens, Node* flow, Node* expression, Node* fork)
+			Node(std::vector<Token> tokens, Node* flow, Node* fork, Expression* expression)
 			{
 				this->tokens = tokens;
 				this->fork = fork;
@@ -40,5 +44,25 @@ namespace bv
 				this->flow = flow;
 			}
 		};
+
+        struct Expression
+        {
+            Expression* lhs;
+            Expression* rhs;
+
+            std::vector<Token> tokens;
+
+            Expression()
+            {
+                this->lhs = nullptr;
+                this->rhs = nullptr;
+            }
+
+            Expression(std::vector<Token> tokens, Expression* lhs, Expression* rhs)
+            {
+                this->lhs = lhs;
+                this->rhs = rhs;
+            }
+        };
     };
 }
