@@ -17,7 +17,7 @@ _Expression Layout_
 ## Trees
 
 ### Assignment example
-Here is a simple example of basic five and the example of the generated parse tree.
+Here is a simple example of an assignment and some expressiosns in basic five and the example of the generated parse tree.
 
 _Code:_
 ```basic
