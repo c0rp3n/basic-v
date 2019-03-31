@@ -8,42 +8,42 @@ namespace bv
 {
     struct PTree
     {
-	public:
-		struct Node;
+    public:
+        struct Node;
         struct Expression;
 
-		std::vector<Node> nodes;
+        std::vector<Node> nodes;
         std::vector<Expression> expressions;
 
         std::vector<Node*> trees;
 
-		PTree()
-		{
-		}
+        PTree()
+        {
+        }
 
-		struct Node
-		{
+        struct Node
+        {
             Node* fork;
             Expression* expression;
-			Node* flow;
+            Node* flow;
 
-			std::vector<Token> tokens;
+            std::vector<Token> tokens;
 
-			Node()
-			{
-				this->fork = nullptr;
+            Node()
+            {
+                this->fork = nullptr;
                 this->expression = nullptr;
-				this->flow = nullptr;
-			}
+                this->flow = nullptr;
+            }
 
-			Node(std::vector<Token> tokens, Node* flow, Node* fork, Expression* expression)
-			{
-				this->tokens = tokens;
-				this->fork = fork;
+            Node(std::vector<Token> tokens, Node* flow, Node* fork, Expression* expression)
+            {
+                this->tokens = tokens;
+                this->fork = fork;
                 this->expression = expression;
-				this->flow = flow;
-			}
-		};
+                this->flow = flow;
+            }
+        };
 
         struct Expression
         {
