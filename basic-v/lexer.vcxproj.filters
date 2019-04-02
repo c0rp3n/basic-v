@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="source\lexer.cpp" />
+    <ClCompile Include="source\Lexer\Tokeniser.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Types\Token.hpp">
@@ -13,7 +16,9 @@
     <ClInclude Include="source\IO\FileReader.hpp">
       <Filter>IO</Filter>
     </ClInclude>
-    <ClInclude Include="source\Tokeniser.hpp" />
+    <ClInclude Include="source\Lexer\Tokeniser.hpp">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Types">
@@ -21,6 +26,9 @@
     </Filter>
     <Filter Include="IO">
       <UniqueIdentifier>{05dcf82b-21be-405c-ae0c-619e89edc7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lexer">
+      <UniqueIdentifier>{33aad1c4-2340-4759-8a50-23a46d555f0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
