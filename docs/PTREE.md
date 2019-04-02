@@ -22,6 +22,8 @@ Here is a simple example of an assignment and some expressiosns in basic five an
 _Code:_
 ```basic
 dim x = 1 + (2 * 3)
+
+end
 ```
 
 _Tree:_
