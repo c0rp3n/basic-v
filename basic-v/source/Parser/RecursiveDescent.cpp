@@ -313,13 +313,17 @@ void bv::Parser::RecursiveDescent::statement()
 
 void bv::Parser::RecursiveDescent::block()
 {
-	ParseTreeNode *tempTree = tree;
+	ParseTreeNode *masterTree = tree;
 	tree = nullptr;
+
+	std::vector<ParseTreeNode*> blockTrees;
+
 	do
 	{
 		if (accept(Lexeme::Data))
 		{
-
+			ParseTreeNode *tempTree = tree;
+			tree = nullptr;
 			do
 			{
 				expect(Lexeme::Identifier);
@@ -333,9 +337,13 @@ void bv::Parser::RecursiveDescent::block()
 					error("Invalid data type...");
 				}
 			} while (accept(Lexeme::Comma));
+			tempTree->nodes.push_back(tree);
+			tree = tempTree;
 		}
 		else if (accept(Lexeme::Dim))
 		{
+			ParseTreeNode *tempTree = tree;
+			tree = nullptr;
 			do
 			{
 				expect(Lexeme::Identifier);
@@ -351,12 +359,44 @@ void bv::Parser::RecursiveDescent::block()
 					}
 				}
 			} while (accept(Lexeme::Comma));
+			tempTree->nodes.push_back(tree);
+			tree = tempTree;
 		}
 		else
 		{
 			statement();
 		}
+
+		ParseTreeNode *tempTree = tree;
+		tree = nullptr;
+		blockTrees.push_back(tempTree);
 	} while (accept(Lexeme::NewLine));
+
+	ParseTreeNode *wholeTree = nullptr;
+	for (int i = blockTrees.size() - 1; i > -1; i--)
+	{
+		if (wholeTree == nullptr)
+			wholeTree = blockTrees.at(i);
+		else
+		{
+			ParseTreeNode *temp = wholeTree;
+			wholeTree = blockTrees.at(i);
+			wholeTree->nodes.push_back(temp);
+		}
+	}
+
+	if (masterTree == nullptr)
+	{
+		masterTree = wholeTree;
+	}
+	else
+	{
+		masterTree->nodes.push_back(wholeTree);
+	}
+
+	tree = masterTree;
+
+
 }
 
 void bv::Parser::RecursiveDescent::program()

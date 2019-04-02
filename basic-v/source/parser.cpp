@@ -73,6 +73,12 @@ int main(int argc, char* argv[])
 
 	std::vector<bv::Token> tokens =
 	{
+		bv::Token(0, 0, bv::Lexeme::Dim),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "foo"),
+		bv::Token(0, 0, bv::Lexeme::Assign),
+		bv::Token(0, 0, bv::Lexeme::String, "bar"),
+		bv::Token(0, 0, bv::Lexeme::NewLine),
+
 		bv::Token(0, 0, bv::Lexeme::For),
 		bv::Token(0, 0, bv::Lexeme::Identifier, "i"),
 		bv::Token(0, 0, bv::Lexeme::Assign),
@@ -96,6 +102,7 @@ int main(int argc, char* argv[])
 
 			bv::Token(0, 0, bv::Lexeme::Next),
 			bv::Token(0, 0, bv::Lexeme::Identifier, "i"),
+			bv::Token(0, 0, bv::Lexeme::NewLine),
 
 		bv::Token(0, 0, bv::Lexeme::While),
 		bv::Token(0, 0, bv::Lexeme::Identifier, "trees"),
