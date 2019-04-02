@@ -127,9 +127,17 @@ void bv::Parser::RecursiveDescent::condition()
 	else
 	{
 		expression();
+		ParseTreeNode *lhs = tree;
+		tree = nullptr;
+
 		if (accept(Lexeme::Equal) || accept(Lexeme::NotEqual) || accept(Lexeme::LessThan) || accept(Lexeme::LessThanOrEqual) || accept(Lexeme::GreaterThan) || accept(Lexeme::GreaterThanOrEqual))
 		{
+			tree->nodes.push_back(lhs);
+			ParseTreeNode *tempTree = tree;
+			tree = nullptr;
 			expression();
+			tempTree->nodes.push_back(tree);
+			tree = tempTree;
 		}
 		else
 		{
@@ -305,6 +313,8 @@ void bv::Parser::RecursiveDescent::statement()
 
 void bv::Parser::RecursiveDescent::block()
 {
+	ParseTreeNode *tempTree = tree;
+	tree = nullptr;
 	do
 	{
 		if (accept(Lexeme::Data))
