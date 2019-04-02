@@ -143,6 +143,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\parser.cpp" />
+    <ClCompile Include="source\Parser\RecursiveDescent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Parser\RecursiveDescent.hpp" />
+    <ClInclude Include="source\Types\Lexeme.hpp" />
+    <ClInclude Include="source\Types\PTree.hpp" />
+    <ClInclude Include="source\Types\Token.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

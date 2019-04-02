@@ -65,4 +65,27 @@ namespace bv
             }
         };
     };
+
+
+    struct ParseTreeNode
+    {
+        std::vector<ParseTreeNode*> nodes;
+        Token token;
+
+        ParseTreeNode()
+        {
+
+        }
+
+        ParseTreeNode(Token token)
+        {
+            this->token = token;
+        }
+
+        ParseTreeNode(Token token, std::vector<ParseTreeNode*> nodes)
+        {
+            this->token = token;
+            this->nodes = nodes;
+        }
+    };
 }

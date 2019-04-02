@@ -4,20 +4,24 @@
 
 void bv::Parser::RecursiveDescent::Parse(std::vector<Token>* tokens)
 {
+	this->tokens = tokens;
 	tokenIterator = tokens->begin();
 	program();
 }
 
-bool bv::Parser::RecursiveDescent::accept(bv::Lexeme l)
+bool bv::Parser::RecursiveDescent::accept(Lexeme l)
 {
+	if (tokenIterator == tokens->end())
+		return false;
 	if (tokenIterator->token == l) {
+		addToTree();
 		tokenIterator++;
 		return true;
 	}
 	return false;
 }
 
-bool bv::Parser::RecursiveDescent::expect(bv::Lexeme l)
+bool bv::Parser::RecursiveDescent::expect(Lexeme l)
 {
 	if (accept(l))
 		return true;
@@ -25,16 +29,65 @@ bool bv::Parser::RecursiveDescent::expect(bv::Lexeme l)
 	return false;
 }
 
+void bv::Parser::RecursiveDescent::addToTree()
+{
+	Lexeme t = tokenIterator->token;
+	if (t == Lexeme::OpenBracket || t == Lexeme::CloseBracket || t == Lexeme::NewLine || t == Lexeme::Then || t == Lexeme::End || t == Lexeme::Of || t == Lexeme::Colon)
+		return;
+
+	ParseTreeNode *node = new ParseTreeNode(*tokenIterator);
+
+	//If tree is empty, make this the root node
+	if (tree == nullptr)
+	{
+		tree = node;
+	}
+
+	else if (t == Lexeme::If || t == Lexeme::Case)
+		return;
+
+	else if (t == Lexeme::Assign)
+	{
+		node->nodes.push_back(tree);
+		tree = node;
+	}
+	else if (tree->token.token == Lexeme::Case || tree->token.token == Lexeme::When)
+	{
+		tree->nodes.push_back(node);
+	}
+
+
+
+	//Expression rules
+	
+	else if (tree->nodes.size() == 2)
+	{
+		node->nodes.push_back(tree);
+		tree = node;
+	}
+	//If node has no lhs, push tree to lhs
+	else if (tree->nodes.size() < 1)
+	{
+		node->nodes.push_back(tree);
+		tree = node;
+	}
+	//Otherwise push to rhs of tree
+	else
+	{
+		tree->nodes.push_back(node);
+	}
+}
+
 void bv::Parser::RecursiveDescent::factor()
 {
-	if (accept(bv::Lexeme::Identifier) || accept(bv::Lexeme::Real) || accept(bv::Lexeme::Integer))
+	if (accept(Lexeme::Identifier) || accept(Lexeme::Real) || accept(Lexeme::Integer))
 	{
 		;
 	}
-	else if (accept(bv::Lexeme::OpenBracket))
+	else if (accept(Lexeme::OpenBracket))
 	{
 		expression();
-		expect(bv::Lexeme::CloseBracket);
+		expect(Lexeme::CloseBracket);
 	}
 	else {
 		error("factor: syntax error");
@@ -45,21 +98,20 @@ void bv::Parser::RecursiveDescent::factor()
 void bv::Parser::RecursiveDescent::term()
 {
 	factor();
-	while (tokenIterator->token == bv::Lexeme::Multiply || tokenIterator->token == bv::Lexeme::Divide)
+	while (accept(Lexeme::Multiply) || accept(Lexeme::Divide))
 	{
-		tokenIterator++;
 		factor();
 	}
 }
 
 void bv::Parser::RecursiveDescent::expression()
 {
-	if (accept(bv::Lexeme::Addition) || accept(bv::Lexeme::Subtraction))
+	if (accept(Lexeme::Addition) || accept(Lexeme::Subtraction))
 	{
 		;
 	}
 	term();
-	while (accept(bv::Lexeme::Addition) || accept(bv::Lexeme::Subtraction))
+	while (accept(Lexeme::Addition) || accept(Lexeme::Subtraction))
 	{
 		term();
 	}
@@ -67,14 +119,14 @@ void bv::Parser::RecursiveDescent::expression()
 
 void bv::Parser::RecursiveDescent::condition()
 {
-	if (accept(bv::Lexeme::Not))
+	if (accept(Lexeme::Not))
 	{
 		factor();
 	}
 	else
 	{
 		expression();
-		if (accept(bv::Lexeme::Equal) || accept(bv::Lexeme::NotEqual) || accept(bv::Lexeme::LessThan) || accept(bv::Lexeme::LessThanOrEqual) || accept(bv::Lexeme::GreaterThan) || accept(bv::Lexeme::GreaterThanOrEqual))
+		if (accept(Lexeme::Equal) || accept(Lexeme::NotEqual) || accept(Lexeme::LessThan) || accept(Lexeme::LessThanOrEqual) || accept(Lexeme::GreaterThan) || accept(Lexeme::GreaterThanOrEqual))
 		{
 			expression();
 		}
@@ -87,69 +139,100 @@ void bv::Parser::RecursiveDescent::condition()
 
 void bv::Parser::RecursiveDescent::statement()
 {
-	if (accept(bv::Lexeme::Identifier))
+	ParseTreeNode *masterTree = tree;
+	tree = nullptr;
+
+	if (accept(Lexeme::Identifier))
 	{
-		expect(bv::Lexeme::Assign);
-		if (!accept(bv::Lexeme::String))
+		expect(Lexeme::Assign);
+		if (!accept(Lexeme::String))
 		{
+			ParseTreeNode *tree2 = tree;
+			tree = nullptr;
 			expression();
+			tree2->nodes.push_back(tree);
+			tree = tree2;
 		}
 	}
-	else if (accept(bv::Lexeme::If))
+	else if (accept(Lexeme::If))
 	{
+		ParseTreeNode *tempTree = tree;
+		tree = nullptr;
 		condition();
-		expect(bv::Lexeme::Then);
-		if (accept(bv::Lexeme::NewLine))
+		tempTree->nodes.push_back(tree);
+		tree = nullptr;
+
+		expect(Lexeme::Then);
+		if (accept(Lexeme::NewLine))
 		{
+			
 			block();
-			expect(bv::Lexeme::End);
-			expect(bv::Lexeme::If);
+			tempTree->nodes.push_back(tree);
+			tree = tempTree;
+
+			expect(Lexeme::End);
+			expect(Lexeme::If);
 		}
 		else
 		{
 			statement();
 		}
+
+		tempTree->nodes.push_back(tree);
+		tree = tempTree;
 		
 	}
-	else if (accept(bv::Lexeme::Case))
+	else if (accept(Lexeme::Case))
 	{
-		expect(bv::Lexeme::Identifier);
-		expect(bv::Lexeme::Of);
-		expect(bv::Lexeme::NewLine);
-		while (accept(bv::Lexeme::When))
+		expect(Lexeme::Identifier);
+		expect(Lexeme::Of);
+		expect(Lexeme::NewLine);
+
+
+
+		ParseTreeNode *tempTree = tree;
+		tree = nullptr;
+
+		while (accept(Lexeme::When))
 		{
-			if (accept(bv::Lexeme::Integer) || accept(bv::Lexeme::Real) || accept(bv::Lexeme::String))
+			if (accept(Lexeme::Integer) || accept(Lexeme::Real) || accept(Lexeme::String))
 			{
-				expect(bv::Lexeme::Colon);
+				expect(Lexeme::Colon);
 				block();
 			}
 			else
 			{
 				error("Statement: No data given to When statement");
 			}
+
+			tempTree->nodes.push_back(tree);
+			tree = nullptr;
 		}
-		if (accept(bv::Lexeme::Otherwise))
+		if (accept(Lexeme::Otherwise))
 		{
-			expect(bv::Lexeme::Colon);
+			expect(Lexeme::Colon);
 			block();
 		}
-		expect(bv::Lexeme::End);
-		expect(bv::Lexeme::Case);
+		expect(Lexeme::End);
+		expect(Lexeme::Case);
+
+		tempTree->nodes.push_back(tree);
+		tree = tempTree;
 	}
-	else if (accept(bv::Lexeme::For))
+	else if (accept(Lexeme::For))
 	{
-		expect(bv::Lexeme::Identifier);
-		expect(bv::Lexeme::Assign);
-		if (accept(bv::Lexeme::Identifier) || accept(bv::Lexeme::Integer))
+		expect(Lexeme::Identifier);
+		expect(Lexeme::Assign);
+		if (accept(Lexeme::Identifier) || accept(Lexeme::Integer))
 		{
-			expect(bv::Lexeme::To);
-			if(accept(bv::Lexeme::Identifier) || accept(bv::Lexeme::Integer))
+			expect(Lexeme::To);
+			if(accept(Lexeme::Identifier) || accept(Lexeme::Integer))
 			{
-				if (accept(bv::Lexeme::NewLine))
+				if (accept(Lexeme::NewLine))
 				{
 					block();
-					expect(bv::Lexeme::Next);
-					expect(bv::Lexeme::Identifier);
+					expect(Lexeme::Next);
+					expect(Lexeme::Identifier);
 				}
 				else
 				{
@@ -166,15 +249,15 @@ void bv::Parser::RecursiveDescent::statement()
 			error("Invalid range beginning for FOR loop...");
 		}
 	}
-	else if (accept(bv::Lexeme::While))
+	else if (accept(Lexeme::While))
 	{
 		condition();
-		expect(bv::Lexeme::Do);
-		if (accept(bv::Lexeme::NewLine))
+		expect(Lexeme::Do);
+		if (accept(Lexeme::NewLine))
 		{
 			block();
-			expect(bv::Lexeme::End);
-			expect(bv::Lexeme::While);
+			expect(Lexeme::End);
+			expect(Lexeme::While);
 		}
 		else
 		{
@@ -185,20 +268,30 @@ void bv::Parser::RecursiveDescent::statement()
 	{
 		error("Statement: Syntax Error");
 	}
+
+	if (masterTree != nullptr)
+	{
+		masterTree->nodes.push_back(tree);
+		tree = masterTree;
+	}
+	else
+	{
+		masterTree = tree;
+	}
 }
 
 void bv::Parser::RecursiveDescent::block()
 {
 	do
 	{
-		if (accept(bv::Lexeme::Data))
+		if (accept(Lexeme::Data))
 		{
 
 			do
 			{
-				expect(bv::Lexeme::Identifier);
-				expect(bv::Lexeme::Assign);
-				if (accept(bv::Lexeme::Identifier) || accept(bv::Lexeme::Integer))
+				expect(Lexeme::Identifier);
+				expect(Lexeme::Assign);
+				if (accept(Lexeme::Identifier) || accept(Lexeme::Integer) || accept(Lexeme::String))
 				{
 					;
 				}
@@ -206,16 +299,16 @@ void bv::Parser::RecursiveDescent::block()
 				{
 					error("Invalid data type...");
 				}
-			} while (accept(bv::Lexeme::Comma));
+			} while (accept(Lexeme::Comma));
 		}
-		else if (accept(bv::Lexeme::Dim))
+		else if (accept(Lexeme::Dim))
 		{
 			do
 			{
-				expect(bv::Lexeme::Identifier);
-				if (accept(bv::Lexeme::Assign))
+				expect(Lexeme::Identifier);
+				if (accept(Lexeme::Assign))
 				{
-					if (accept(bv::Lexeme::Identifier) || accept(bv::Lexeme::Integer))
+					if (accept(Lexeme::Identifier) || accept(Lexeme::Integer) || accept(Lexeme::String))
 					{
 						;
 					}
@@ -224,51 +317,18 @@ void bv::Parser::RecursiveDescent::block()
 						error("Invalid data type...");
 					}
 				}
-			} while (accept(bv::Lexeme::Comma));
+			} while (accept(Lexeme::Comma));
 		}
 		else
 		{
 			statement();
 		}
-	} while (accept(bv::Lexeme::NewLine));
+	} while (accept(Lexeme::NewLine));
 }
 
 void bv::Parser::RecursiveDescent::program()
 {
-	while (accept(bv::Lexeme::Def))
-	{
-		expect(bv::Lexeme::Sub);
-		expect(bv::Lexeme::Identifier);
-		expect(bv::Lexeme::OpenBracket);
-		if (accept(bv::Lexeme::Identifier))
-		{
-			while (accept(bv::Lexeme::Comma))
-			{
-				expect(bv::Lexeme::Identifier);
-			}
-		}
-		expect(bv::Lexeme::CloseBracket);
-		expect(bv::Lexeme::NewLine);
-	}
 	block();
-	while (accept(bv::Lexeme::Sub))
-	{
-		expect(bv::Lexeme::Identifier);
-		expect(bv::Lexeme::OpenBracket);
-		if (accept(bv::Lexeme::Identifier))
-		{
-			while (accept(bv::Lexeme::Comma))
-			{
-				expect(bv::Lexeme::Identifier);
-			}
-		}
-		expect(bv::Lexeme::CloseBracket);
-		expect(bv::Lexeme::NewLine);
-		block();
-		expect(bv::Lexeme::End);
-		expect(bv::Lexeme::Sub);
-		expect(bv::Lexeme::NewLine);
-	}
 }
 
 void bv::Parser::RecursiveDescent::error(std::string s)

@@ -13,21 +13,23 @@ namespace bv
 		class RecursiveDescent
 		{
 		public:
-			static void Parse(std::vector<Token>*);
+			void Parse(std::vector<Token>*);
 
 		private:
-			static bool accept(Lexeme);
-			static bool expect(Lexeme);
-			static void factor();
-			static void term();
-			static void expression();
-			static void condition();
-			static void statement();
-			static void block();
-			static void program();
-			static void error(std::string);
-			static bv::PTree parseTree;
-			static std::vector<Token>::iterator tokenIterator;
+			bool accept(Lexeme);
+			bool expect(Lexeme);
+			void addToTree();
+			void factor();
+			void term();
+			void expression();
+			void condition();
+			void statement();
+			void block();
+			void program();
+			void error(std::string);
+			ParseTreeNode* tree;
+			std::vector<Token>* tokens;
+			std::vector<Token>::iterator tokenIterator;
 		};
 	}
 }

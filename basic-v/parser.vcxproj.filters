@@ -2,5 +2,30 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="source\parser.cpp" />
+    <ClCompile Include="source\Parser\RecursiveDescent.cpp">
+      <Filter>Parser</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{6edb383e-fc3a-40ff-b072-0c49b3ab6943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{741f730d-f581-4dec-b055-e911c6c98bcc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Types\Lexeme.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\PTree.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\Token.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Parser\RecursiveDescent.hpp">
+      <Filter>Parser</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
