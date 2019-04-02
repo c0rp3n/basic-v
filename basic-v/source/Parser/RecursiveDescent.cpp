@@ -7,6 +7,7 @@ void bv::Parser::RecursiveDescent::Parse(std::vector<Token>* tokens)
 	this->tokens = tokens;
 	tokenIterator = tokens->begin();
 	program();
+	system("pause");
 }
 
 bool bv::Parser::RecursiveDescent::accept(Lexeme l)
@@ -32,7 +33,7 @@ bool bv::Parser::RecursiveDescent::expect(Lexeme l)
 void bv::Parser::RecursiveDescent::addToTree()
 {
 	Lexeme t = tokenIterator->token;
-	if (t == Lexeme::OpenBracket || t == Lexeme::CloseBracket || t == Lexeme::NewLine || t == Lexeme::Then || t == Lexeme::End || t == Lexeme::Of || t == Lexeme::Colon)
+	if (t == Lexeme::OpenBracket || t == Lexeme::CloseBracket || t == Lexeme::NewLine || t == Lexeme::Then || t == Lexeme::End || t == Lexeme::Of || t == Lexeme::Colon || t == Lexeme::Do || t == Lexeme::Next)
 		return;
 
 	ParseTreeNode *node = new ParseTreeNode(*tokenIterator);
@@ -43,7 +44,7 @@ void bv::Parser::RecursiveDescent::addToTree()
 		tree = node;
 	}
 
-	else if (t == Lexeme::If || t == Lexeme::Case)
+	else if (t == Lexeme::If || t == Lexeme::Case || (t == Lexeme::Identifier && tree->token.token == Lexeme::For))
 		return;
 
 	else if (t == Lexeme::Assign)
@@ -221,22 +222,36 @@ void bv::Parser::RecursiveDescent::statement()
 	}
 	else if (accept(Lexeme::For))
 	{
+		ParseTreeNode *tempTree = tree;
+		tree = nullptr;
+
 		expect(Lexeme::Identifier);
 		expect(Lexeme::Assign);
 		if (accept(Lexeme::Identifier) || accept(Lexeme::Integer))
 		{
+			tempTree->nodes.push_back(tree);
+			tree = nullptr;
+
 			expect(Lexeme::To);
 			if(accept(Lexeme::Identifier) || accept(Lexeme::Integer))
 			{
+				tempTree->nodes.push_back(tree);
+				tree = nullptr;
+
 				if (accept(Lexeme::NewLine))
 				{
 					block();
+					tempTree->nodes.push_back(tree);
+					tree = tempTree;
+
 					expect(Lexeme::Next);
 					expect(Lexeme::Identifier);
 				}
 				else
 				{
 					statement();
+					tempTree->nodes.push_back(tree);
+					tree = tempTree;
 				}
 			}
 			else
@@ -251,7 +266,12 @@ void bv::Parser::RecursiveDescent::statement()
 	}
 	else if (accept(Lexeme::While))
 	{
+		ParseTreeNode *tempTree = tree;
+		tree = nullptr;
 		condition();
+		tempTree->nodes.push_back(tree);
+		tree = nullptr;
+
 		expect(Lexeme::Do);
 		if (accept(Lexeme::NewLine))
 		{
@@ -263,6 +283,9 @@ void bv::Parser::RecursiveDescent::statement()
 		{
 			statement();
 		}
+		tempTree->nodes.push_back(tree);
+		tree = tempTree;
+
 	}
 	else
 	{

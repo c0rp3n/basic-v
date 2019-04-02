@@ -32,10 +32,6 @@ int main(int argc, char* argv[])
 		bv::Token(0, 0, bv::Lexeme::Assign),
 		bv::Token(0, 0, bv::Lexeme::Integer, "4")
 	};
-	*/
-
-	//case var of
-	//	when 0: print "Values: 0"
 
 	std::vector<bv::Token> tokens =
 	{
@@ -58,7 +54,69 @@ int main(int argc, char* argv[])
 		bv::Token(0, 0, bv::Lexeme::Case)
 	};
 
-	bv::Parser::RecursiveDescent a;
-	a.Parse(&tokens);
+	std::vector<bv::Token> tokens =
+	{
+		bv::Token(0, 0, bv::Lexeme::While),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "trees"),
+		bv::Token(0, 0, bv::Lexeme::Equal),
+		bv::Token(0, 0, bv::Lexeme::Integer, "4"),
+		bv::Token(0, 0, bv::Lexeme::Do),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "cutTrees"),
+		bv::Token(0, 0, bv::Lexeme::Assign),
+		bv::Token(0, 0, bv::Lexeme::OpenBracket),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "trees"),
+		bv::Token(0, 0, bv::Lexeme::Subtraction),
+		bv::Token(0, 0, bv::Lexeme::Integer, "1"),
+		bv::Token(0, 0, bv::Lexeme::CloseBracket),
+	};
+	*/
+
+	std::vector<bv::Token> tokens =
+	{
+		bv::Token(0, 0, bv::Lexeme::For),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "i"),
+		bv::Token(0, 0, bv::Lexeme::Assign),
+		bv::Token(0, 0, bv::Lexeme::Integer, "1"),
+		bv::Token(0, 0, bv::Lexeme::To),
+		bv::Token(0, 0, bv::Lexeme::Integer, "9"),
+		bv::Token(0, 0, bv::Lexeme::NewLine),
+
+			bv::Token(0, 0, bv::Lexeme::If),
+			bv::Token(0, 0, bv::Lexeme::Identifier, "i"),
+			bv::Token(0, 0, bv::Lexeme::NotEqual),
+			bv::Token(0, 0, bv::Lexeme::OpenBracket),
+			bv::Token(0, 0, bv::Lexeme::Identifier, "GlobalTrees"),
+			bv::Token(0, 0, bv::Lexeme::Subtraction),
+			bv::Token(0, 0, bv::Lexeme::Integer, "1"),
+			bv::Token(0, 0, bv::Lexeme::CloseBracket),
+			bv::Token(0, 0, bv::Lexeme::Then),
+			bv::Token(0, 0, bv::Lexeme::Identifier, "someVar"),
+			bv::Token(0, 0, bv::Lexeme::Assign),
+			bv::Token(0, 0, bv::Lexeme::Integer, "4"),
+
+			bv::Token(0, 0, bv::Lexeme::Next),
+			bv::Token(0, 0, bv::Lexeme::Identifier, "i"),
+
+		bv::Token(0, 0, bv::Lexeme::While),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "trees"),
+		bv::Token(0, 0, bv::Lexeme::Equal),
+		bv::Token(0, 0, bv::Lexeme::Integer, "4"),
+		bv::Token(0, 0, bv::Lexeme::Do),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "cutTrees"),
+		bv::Token(0, 0, bv::Lexeme::Assign),
+		bv::Token(0, 0, bv::Lexeme::OpenBracket),
+		bv::Token(0, 0, bv::Lexeme::Identifier, "trees"),
+		bv::Token(0, 0, bv::Lexeme::Subtraction),
+		bv::Token(0, 0, bv::Lexeme::Integer, "1"),
+		bv::Token(0, 0, bv::Lexeme::CloseBracket)
+
+	};
+
+	bv::Parser::RecursiveDescent parser;
+	parser.Parse(&tokens);
+
+
+
+
 	system("pause");
 }
