@@ -6,70 +6,9 @@
 
 namespace bv
 {
-    struct PTree
-    {
-    public:
-        struct Node;
-        struct Expression;
-
-        std::vector<Node> nodes;
-        std::vector<Expression> expressions;
-
-        std::vector<Node*> trees;
-
-        PTree()
-        {
-        }
-
-        struct Node
-        {
-            Node* fork;
-            Expression* expression;
-            Node* flow;
-
-            std::vector<Token> tokens;
-
-            Node()
-            {
-                this->fork = nullptr;
-                this->expression = nullptr;
-                this->flow = nullptr;
-            }
-
-            Node(std::vector<Token> tokens, Node* flow, Node* fork, Expression* expression)
-            {
-                this->tokens = tokens;
-                this->fork = fork;
-                this->expression = expression;
-                this->flow = flow;
-            }
-        };
-
-        struct Expression
-        {
-            Expression* lhs;
-            Expression* rhs;
-
-            std::vector<Token> tokens;
-
-            Expression()
-            {
-                this->lhs = nullptr;
-                this->rhs = nullptr;
-            }
-
-            Expression(std::vector<Token> tokens, Expression* lhs, Expression* rhs)
-            {
-                this->lhs = lhs;
-                this->rhs = rhs;
-            }
-        };
-    };
-
-
     struct ParseTreeNode
     {
-        std::vector<ParseTreeNode*> nodes;
+        std::vector<std::shared_ptr<ParseTreeNode>> nodes;
         Token token;
 
         ParseTreeNode()
@@ -80,12 +19,6 @@ namespace bv
         ParseTreeNode(Token token)
         {
             this->token = token;
-        }
-
-        ParseTreeNode(Token token, std::vector<ParseTreeNode*> nodes)
-        {
-            this->token = token;
-            this->nodes = nodes;
         }
     };
 }
