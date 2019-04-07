@@ -211,7 +211,7 @@ void bv::Parser::RecursiveDescent::statement()
             }
             else
             {
-                error("Statement: No data given to When statement");
+                error("Statement: No valid data given to When statement");
             }
 
             tempTree->nodes.push_back(tree);
@@ -334,7 +334,7 @@ void bv::Parser::RecursiveDescent::block()
                 }
                 else
                 {
-                    error("Invalid data type...");
+                    error("Invalid data type passed to data");
                 }
             } while (accept(Lexeme::Comma));
             tempTree->nodes.push_back(tree);
@@ -355,7 +355,7 @@ void bv::Parser::RecursiveDescent::block()
                     }
                     else
                     {
-                        error("Invalid data type...");
+                        error("Invalid data type passed to dim");
                     }
                 }
             } while (accept(Lexeme::Comma));
@@ -406,5 +406,5 @@ void bv::Parser::RecursiveDescent::program()
 
 void bv::Parser::RecursiveDescent::error(std::string s)
 {
-    std::cout << s;
+    std::cout << s << std::endl << "Line " << (*tokenIterator).line << ", position " << (*tokenIterator).position << ".";
 }
