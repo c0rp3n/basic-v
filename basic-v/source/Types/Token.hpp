@@ -7,23 +7,23 @@
 
 namespace bv
 {
-    struct Token
-    {
-        uint64_t line;
-        uint64_t position;
-        Lexeme token;
-        std::string value;
+	struct Token
+	{
+		uint64_t line;
+		uint64_t position;
+		Lexeme token;
+		std::string value;
 
-        Token()
-        {
-        };
+		Token()
+		{
+		};
 
-        Token(uint64_t line, uint64_t position, Lexeme token, std::string value = "")
-        {
-            this->line = line;
-            this->position = position;
-            this->token = token;
-            this->value = value;
-        }
-    };
+		Token(uint64_t line, uint64_t position, Lexeme token, std::string value = "")
+		{
+			this->line = line;
+			this->position = position;
+			this->token = token;
+			this->value = value;
+		}
+	};
 }
