@@ -401,6 +401,8 @@ void bv::Parser::RecursiveDescent::block()
 
 void bv::Parser::RecursiveDescent::program()
 {
+    //Space for function declarations here in future. For now, a program is just a block.
+
     block();
 }
 
