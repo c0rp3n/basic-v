@@ -14,6 +14,10 @@ namespace bv
         Lexeme token;
         std::string value;
 
+        Token()
+        {
+        };
+
         Token(uint64_t line, uint64_t position, Lexeme token, std::string value = "")
         {
             this->line = line;

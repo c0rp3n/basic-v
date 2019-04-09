@@ -134,6 +134,10 @@ namespace bv
         /// </summary>
         Div,
         /// <summary>
+        /// Keyword Do, indicates a block/statement to be executed as part of a while statement.
+        /// </summary>
+        Do,
+        /// <summary>
         /// Keyword Else, if statement delimiter which starts an alternate action.
         /// </summary>
         Else,
