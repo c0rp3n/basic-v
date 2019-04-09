@@ -16,17 +16,17 @@ namespace bv
             void Parse(std::vector<Token>*);
 
         private:
-            bool accept(Lexeme);
-            bool expect(Lexeme);
-            void addToTree();
-            void factor();
-            void term();
-            void expression();
-            void condition();
-            void statement();
-            void block();
-            void program();
-            void error(std::string);
+            bool Accept(Lexeme);
+            bool Expect(Lexeme);
+            void AddToTree();
+            void Factor();
+            void Term();
+            void Expression();
+            void Condition();
+            void Statement();
+            void Block();
+            void Program();
+            void Error(std::string);
             std::shared_ptr<ParseTreeNode> tree;
             std::vector<Token>* tokens;
             std::vector<Token>::iterator tokenIterator;
