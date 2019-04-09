@@ -12,6 +12,6 @@ namespace bv::Lexer
     public:
         static void TokeniseLines(std::vector<std::string>::iterator start, std::vector<std::string>::iterator end, int startLine, std::vector<bv::Token>* tokens);
 
-        static Token TokeniseLine(std::string* line, int lineNumber);
+        static void TokeniseLine(std::string line, int lineNumber, std::vector<bv::Token>* tokens);
     };
 }
