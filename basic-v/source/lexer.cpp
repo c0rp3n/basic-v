@@ -86,6 +86,14 @@ int main(int argc, char* argv[])
         }
     }
 
+	std::string fileout;
+	{
+		size_t filename = filepath.find_last_of(u8'\\');
+		size_t fileExtension = filepath.find_last_of(u8'.');
+		fileout = filepath.substr(0, filename) + u8"lexeme\\" + filepath.substr() + u8"-tokens.json";
+	}
+
+	bv::Token::Serialise(fileout, &tokens);
 
     return 0;
 }

@@ -1,13 +1,33 @@
 #pragma once
 
 #include <cstdint>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
+#include <nlohmann/json.hpp>
 
 #include "Lexeme.hpp"
+
+/*
+JSON Schema
+{
+  "tokens": [
+	{
+	  "line": "1",
+	  "position": "2",
+	  "token": "1",
+	  "data": ""
+	},
+	{
+	  "line": "1",
+	  "position": "5",
+	  "token": "4",
+	  "data": "hello"
+	}
+  ]
+}
+*/
 
 namespace bv
 {
@@ -30,59 +50,48 @@ namespace bv
             this->value = value;
         }
 
-        bool Parse(std::string jsonpath, std::vector<Token>* tokens)
+		/*
+        static bool Parse(std::string jsonpath, std::vector<Token>* tokens)
         {
-            rapidjson::Document d;
             std::ifstream ifs(jsonpath);
-            d.ParseStream(ifs);
-            
-            if (d["tokens"].IsArray())
-            {
-                for (auto& v : d.GetArray())
-                {
-                    tokens->push_back(Token
-                    (
-                        v["line"].GetUint64(),
-                        v["position"].GetUint64(),
-                        (Lexeme)(v["token"].GetUint64()),
-                        std::string(v["value"].GetString())
-                    ));
-                }
-            }
-            else
-            {
-                return false;
-            }
+
+			std::string data;
+			data.assign((std::istreambuf_iterator<char>(ifs)),
+						(std::istreambuf_iterator<char>()));
+
+			nlohmann::json json = nlohmann::json::parse(data);
+			if (json["tokens"].is_array())
+			{
+				for (auto& e : json["tokens"])
+				{
+					e["line"];
+				}
+			}
+			else
+			{
+				return false;
+			}
 
             return true;
         }
+		*/
 
-        bool Serialise(std::string jsonpath, std::vector<Token>* tokens)
+        static bool Serialise(std::string jsonpath, std::vector<Token>* tokens)
         {
-            rapidjson::Document d;
-            d.SetObject();
-            rapidjson::Document::AllocatorType& allocator = d.GetAllocator();
+			nlohmann::json json;
+			json["tokens"] = {};
+			for (bv::Token& t : *tokens)
+			{
+				json["tokens"].push_back({
+					{ "line", t.line },
+					{ "position", t.position },
+					{ "token", t.token },
+					{ "value", t.value }
+				});
+			}
 
-            rapidjson::Value array(rapidjson::kArrayType);
-            array.Reserve(sizeof(uint64_t) * 4 * tokens->size(), allocator);
-            for (Token& t : *tokens)
-            {
-                rapidjson::Value token(rapidjson::kObjectType);
-                token.AddMember("line", t.line, allocator);
-                token.AddMember("position", t.position, allocator);
-                token.AddMember("token", t.token, allocator);
-                token.AddMember("value", t.value, allocator);
-
-                array.PushBack(token, allocator);
-            }
-
-            d.AddMember("tokens", array, allocator);
-            
-            std::ofstream ofs(jsonpath);
-            rapidjson::Writer<std::ostream> w(ofs);
-            d.Accept(w);
-
-            ofs.close();
+			std::ofstream o("pretty.json");
+			o << std::setw(4) << json << std::endl;
         }
     };
 }

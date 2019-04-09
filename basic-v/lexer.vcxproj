@@ -93,7 +93,7 @@
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)libs\rapidjson\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libs\json\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
