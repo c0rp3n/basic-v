@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 					(
 						bv::Lexer::Tokeniser::TokeniseLines,
 						lines.begin() + (i * linesPerThread),
-						lines.begin() + ((i + 1) * linesPerThread),
+						lines.begin() + ((i + 1) * linesPerThread) - 1,
 						(uint64_t)(i * linesPerThread),
 						std::shared_ptr<std::vector<bv::Token>>(&threadTokens[i])
 					)
