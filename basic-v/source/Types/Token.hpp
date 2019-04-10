@@ -93,6 +93,7 @@ namespace bv
 
 			std::ofstream o(jsonpath, std::ios::binary);
 			o << std::setw(4) << json << std::endl;
+			o.close();
         }
     };
 }

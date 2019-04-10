@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 						lines.begin() + (i * linesPerThread),
 						lines.begin() + ((i + 1) * linesPerThread) - 1,
 						(uint64_t)(i * linesPerThread),
-						std::shared_ptr<std::vector<bv::Token>>(&threadTokens[i])
+						&threadTokens[i]
 					)
 				);
             }
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 					lines.begin() + ((threadCount - 1) * linesPerThread),
 					lines.end(),
 					(uint64_t)((threadCount - 1) * linesPerThread),
-					std::shared_ptr<std::vector<bv::Token>>(&threadTokens[threadCount - 1])
+					&threadTokens[threadCount - 1]
 				)
 			);
 
