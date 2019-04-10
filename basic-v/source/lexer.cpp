@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
         // Thread creation and consequent wait.
         {
             uint32_t threadCount = std::thread::hardware_concurrency();
-            uint32_t linesPerThread = lines.size() / threadCount;
+			uint64_t linesPerThread = lines.size() / threadCount;
             threadTokens.reserve(threadCount);
 
             std::vector<std::thread> threads;
@@ -56,10 +56,30 @@ int main(int argc, char* argv[])
             for (int i = 0; i < threadCount - 1; i++)
             {
                 threadTokens.push_back(std::vector<bv::Token>());
-                threads.push_back(std::thread(bv::Lexer::Tokeniser::TokeniseLines, lines[i * linesPerThread], lines[(i + 1) * linesPerThread], threadTokens[i]));
+                threads.push_back
+				(
+					std::thread
+					(
+						bv::Lexer::Tokeniser::TokeniseLines,
+						lines.begin() + (i * linesPerThread),
+						lines.begin() + ((i + 1) * linesPerThread),
+						(uint64_t)(i * linesPerThread),
+						std::shared_ptr<std::vector<bv::Token>>(&threadTokens[i])
+					)
+				);
             }
             threadTokens.push_back(std::vector<bv::Token>());
-            threads.push_back(std::thread(bv::Lexer::Tokeniser::TokeniseLines, lines[(threadCount - 1) * linesPerThread], lines.end(), threadTokens[threadCount - 1]));
+            threads.push_back
+			(
+				std::thread
+				(
+					bv::Lexer::Tokeniser::TokeniseLines,
+					lines.begin() + ((threadCount - 1) * linesPerThread),
+					lines.end(),
+					(uint64_t)((threadCount - 1) * linesPerThread),
+					std::shared_ptr<std::vector<bv::Token>>(&threadTokens[threadCount - 1])
+				)
+			);
 
             for (std::thread &t : threads)
             {

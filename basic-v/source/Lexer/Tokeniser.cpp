@@ -4,7 +4,7 @@
 
 using namespace bv::Lexer;
 
-void bv::Lexer::Tokeniser::TokeniseLines(std::vector<std::string>::iterator start, std::vector<std::string>::iterator end, int startLine, std::vector<bv::Token>* tokens)
+void bv::Lexer::Tokeniser::TokeniseLines(std::vector<std::string>::iterator start, std::vector<std::string>::iterator end, uint64_t startLine, std::shared_ptr<std::vector<bv::Token>> tokens)
 {
     while (start != end)
     {
@@ -13,7 +13,7 @@ void bv::Lexer::Tokeniser::TokeniseLines(std::vector<std::string>::iterator star
     }
 }
 
-void bv::Lexer::Tokeniser::TokeniseLine(std::string line, int lineNumber, std::vector<bv::Token>* tokens)
+void bv::Lexer::Tokeniser::TokeniseLine(std::string line, uint64_t lineNumber, std::shared_ptr<std::vector<bv::Token>> tokens)
 {
     std::string::iterator iter = line.begin();
     char character;
@@ -21,7 +21,7 @@ void bv::Lexer::Tokeniser::TokeniseLine(std::string line, int lineNumber, std::v
     while (iter < line.end())
     {
         character = *iter;
-        int position = iter - line.begin();
+        int64_t position = iter - line.begin();
         iter++;
 
         //If a keywors or an identifier...
