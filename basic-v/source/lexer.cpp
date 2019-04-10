@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
     if (lines.size() < 1)
     {
+		std::cout << "Empty file passed.";
         return 0;
     }
 
