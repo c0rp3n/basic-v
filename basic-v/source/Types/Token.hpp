@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -90,7 +91,7 @@ namespace bv
 				});
 			}
 
-			std::ofstream o("pretty.json");
+			std::ofstream o(jsonpath, std::ios::binary);
 			o << std::setw(4) << json << std::endl;
         }
     };

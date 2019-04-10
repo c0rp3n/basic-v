@@ -96,10 +96,6 @@ void bv::Lexer::Tokeniser::TokeniseLine(std::string line, int lineNumber, std::v
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Do));
             }
-            else if (value == "endwhile")
-            {
-                tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::EndWhile));
-            }
             else if (value == "end")
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::End));
