@@ -77,7 +77,7 @@ namespace bv
         }
 		*/
 
-        static bool Serialise(std::string jsonpath, std::vector<Token>* tokens)
+        static void Serialise(std::string jsonpath, std::vector<Token>* tokens)
         {
 			nlohmann::json json;
 			json["tokens"] = {};
@@ -93,8 +93,6 @@ namespace bv
 
 			std::ofstream o(jsonpath, std::ios::binary);
 			o << std::setw(4) << json << std::endl;
-
-			return true;
         }
     };
 }
