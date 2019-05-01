@@ -51,7 +51,6 @@ namespace bv
             this->value = value;
         }
 
-		/*
         static bool Parse(std::string jsonpath, std::vector<Token>* tokens)
         {
             std::ifstream ifs(jsonpath);
@@ -63,9 +62,10 @@ namespace bv
 			nlohmann::json json = nlohmann::json::parse(data);
 			if (json["tokens"].is_array())
 			{
-				for (auto& e : json["tokens"])
+				for (auto& e : json["tokens"].items())
 				{
-					e["line"];
+					auto& value = e.value();
+					tokens->push_back(bv::Token(value["line"].get<uint64_t>(), value["position"].get<uint64_t>(), (bv::Lexeme)value["token"].get<uint64_t>(), value["value"].get<std::string>()));
 				}
 			}
 			else
@@ -74,8 +74,7 @@ namespace bv
 			}
 
             return true;
-        }
-		*/
+        } 
 
         static void Serialise(std::string jsonpath, std::vector<Token>* tokens)
         {
