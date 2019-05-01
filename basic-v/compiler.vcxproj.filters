@@ -10,11 +10,17 @@
     <ClInclude Include="source\Types\Lexeme.hpp">
       <Filter>Types</Filter>
     </ClInclude>
-    <ClInclude Include="source\Types\AsTree.hpp">
-      <Filter>Types</Filter>
-    </ClInclude>
     <ClInclude Include="source\Compiler\CodeGenerator.hpp">
       <Filter>Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\PTree.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmSection.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmEnviromentCalls.hpp">
+      <Filter>Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

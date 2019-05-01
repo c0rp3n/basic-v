@@ -23,8 +23,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Compiler\CodeGenerator.hpp" />
-    <ClInclude Include="source\Types\AsTree.hpp" />
+    <ClInclude Include="source\Types\AsmEnviromentCalls.hpp" />
+    <ClInclude Include="source\Types\AsmSection.hpp" />
     <ClInclude Include="source\Types\Lexeme.hpp" />
+    <ClInclude Include="source\Types\PTree.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
