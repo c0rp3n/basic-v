@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <cstdint>
+#include <map>
+#include <string>
 
 namespace bv
 {
@@ -130,10 +132,6 @@ namespace bv
         /// </summary>
         Def,
         /// <summary>
-        /// Keyword Divide, divides the lhs by the rhs.
-        /// </summary>
-        Div,
-        /// <summary>
         /// Keyword Do, indicates a block/statement to be executed as part of a while statement.
         /// </summary>
         Do,
@@ -145,22 +143,6 @@ namespace bv
         /// Keyword End, marks an end of the program or function delimiter if followed by sub.
         /// </summary>
         End,
-        /// <summary>
-        /// Keyword End Case, marks an end of a case statement, must be the first thing on a program line.
-        /// </summary>
-        EndCase,
-        /// <summary>
-        /// Keyword End If, marks an end of a multi line if clause.
-        /// </summary>
-        EndIf,
-        /// <summary>
-        /// Keyword End While, marks an end of a multi line while loop.
-        /// </summary>
-        EndWhile,
-        /// <summary>
-        /// Keyword End Process, denotes the end of a procedure.
-        /// </summary>
-        EndProc,
         /// <summary>
         /// Keyword Exclusive Or, performs the bitwise xor operation between the lhs and rhs.
         /// </summary>

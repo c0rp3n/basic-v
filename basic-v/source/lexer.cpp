@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -37,6 +38,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> lines = bv::IO::FileReader::ReadLines(filepath);
     if (lines.size() < 1)
     {
+		std::cout << "Empty file passed.";
         return 0;
     }
 
@@ -47,7 +49,7 @@ int main(int argc, char* argv[])
         // Thread creation and consequent wait.
         {
             uint32_t threadCount = std::thread::hardware_concurrency();
-            uint32_t linesPerThread = lines.size() / threadCount;
+			uint64_t linesPerThread = lines.size() / threadCount;
             threadTokens.reserve(threadCount);
 
             std::vector<std::thread> threads;
@@ -56,10 +58,30 @@ int main(int argc, char* argv[])
             for (int i = 0; i < threadCount - 1; i++)
             {
                 threadTokens.push_back(std::vector<bv::Token>());
-                threads.push_back(std::thread(bv::Lexer::Tokeniser::TokeniseLines, lines[i * linesPerThread], lines[(i + 1) * linesPerThread], threadTokens[i]));
+                threads.push_back
+				(
+					std::thread
+					(
+						bv::Lexer::Tokeniser::TokeniseLines,
+						lines.begin() + (i * linesPerThread),
+						lines.begin() + ((i + 1) * linesPerThread) - 1,
+						(uint64_t)(i * linesPerThread),
+						&threadTokens[i]
+					)
+				);
             }
             threadTokens.push_back(std::vector<bv::Token>());
-            threads.push_back(std::thread(bv::Lexer::Tokeniser::TokeniseLines, lines[(threadCount - 1) * linesPerThread], lines.end(), threadTokens[threadCount - 1]));
+            threads.push_back
+			(
+				std::thread
+				(
+					bv::Lexer::Tokeniser::TokeniseLines,
+					lines.begin() + ((threadCount - 1) * linesPerThread),
+					lines.end(),
+					(uint64_t)((threadCount - 1) * linesPerThread),
+					&threadTokens[threadCount - 1]
+				)
+			);
 
             for (std::thread &t : threads)
             {
@@ -86,6 +108,16 @@ int main(int argc, char* argv[])
         }
     }
 
+	std::string fileout;
+	{
+		std::filesystem::path path(filepath);
+		std::string filename = path.filename().u8string();
+		size_t fileextention = filename.find_last_of(u8'.');
+		path.replace_filename(filename.substr(0, fileextention) + u8"-lexeme.json");
+		fileout = path.u8string();
+	}
+
+	bv::Token::Serialise(fileout, &tokens);
 
     return 0;
 }

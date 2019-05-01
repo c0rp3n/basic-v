@@ -9,7 +9,7 @@ namespace bv
 {
     namespace IO
     {
-        static class FileReader
+        class FileReader
         {
         public:
             /// <summary>
