@@ -107,7 +107,7 @@
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)libs\rapidjson\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libs\json\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -88,6 +88,7 @@
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectName)-$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)-$(SolutionName)</TargetName>
+    <IncludePath>$(SolutionDir)libs\json\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
