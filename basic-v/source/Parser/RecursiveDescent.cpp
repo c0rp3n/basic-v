@@ -5,17 +5,17 @@
 void bv::Parser::RecursiveDescent::Parse(std::vector<Token>* tokens)
 {
     this->tokens = tokens;
-    tokenIterator = tokens->begin();
-    Program();
+    this->tokenIterator = tokens->begin();
+    this->Program();
 }
 
 bool bv::Parser::RecursiveDescent::Accept(Lexeme l)
 {
-    if (tokenIterator == tokens->end())
+    if (this->tokenIterator == this->tokens->end())
         return false;
-    if (tokenIterator->token == l) {
-        AddToTree();
-        tokenIterator++;
+    if (this->tokenIterator->token == l) {
+		this->AddToTree();
+        this->tokenIterator++;
         return true;
     }
     return false;
@@ -23,353 +23,354 @@ bool bv::Parser::RecursiveDescent::Accept(Lexeme l)
 
 bool bv::Parser::RecursiveDescent::Expect(Lexeme l)
 {
-    if (Accept(l))
+    if (this->Accept(l))
         return true;
-    Error("expect: unexpected symbol");
+	this->Error("expect: unexpected symbol");
     return false;
 }
 
 void bv::Parser::RecursiveDescent::AddToTree()
 {
-    Lexeme t = tokenIterator->token;
+    Lexeme t = this->tokenIterator->token;
     if (t == Lexeme::OpenBracket || t == Lexeme::CloseBracket || t == Lexeme::NewLine || t == Lexeme::Then || t == Lexeme::End || t == Lexeme::Of || t == Lexeme::Colon || t == Lexeme::Do || t == Lexeme::Next)
         return;
 
-    std::shared_ptr<ParseTreeNode> node(new ParseTreeNode(*tokenIterator));
+    std::shared_ptr<ParseTreeNode> node(new ParseTreeNode(this->tokenIterator - this->tokens->begin()));
 
     //If tree is empty, make this the root node
-    if (tree == nullptr)
+    if (this->tree == nullptr)
     {
-        tree = node;
+        this->tree = node;
     }
 
-    else if (t == Lexeme::If || t == Lexeme::Case || (t == Lexeme::Identifier && tree->token.token == Lexeme::For))
+    else if (t == Lexeme::If || t == Lexeme::Case || (t == Lexeme::Identifier && this->tokens->at(tree->index).token == Lexeme::For))
         return;
 
     else if (t == Lexeme::Assign)
     {
         node->nodes.push_back(tree);
-        tree = node;
+        this->tree = node;
     }
-    else if (tree->token.token == Lexeme::Case || tree->token.token == Lexeme::When)
+    else if ((*this->tokens)[tree->index].token == Lexeme::Case || this->tokens->at(tree->index).token == Lexeme::When)
     {
-        tree->nodes.push_back(node);
+        this->tree->nodes.push_back(node);
     }
 
 
 
     //Expression rules
     
-    else if (tree->nodes.size() == 2)
+    else if (this->tree->nodes.size() == 2)
     {
-        node->nodes.push_back(tree);
-        tree = node;
+        node->nodes.push_back(this->tree);
+        this->tree = node;
     }
     //If node has no lhs, push tree to lhs
-    else if (tree->nodes.size() < 1)
+    else if (this->tree->nodes.size() < 1)
     {
-        node->nodes.push_back(tree);
-        tree = node;
+        node->nodes.push_back(this->tree);
+        this->tree = node;
     }
     //Otherwise push to rhs of tree
     else
     {
-        tree->nodes.push_back(node);
+        this->tree->nodes.push_back(node);
     }
 }
 
 void bv::Parser::RecursiveDescent::Factor()
 {
-    if (Accept(Lexeme::Identifier) || Accept(Lexeme::Real) || Accept(Lexeme::Integer))
+    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::Integer))
     {
         ;
     }
-    else if (Accept(Lexeme::OpenBracket))
+    else if (this->Accept(Lexeme::OpenBracket))
     {
-        Expression();
-        Expect(Lexeme::CloseBracket);
+		this->Expression();
+		this->Expect(Lexeme::CloseBracket);
     }
-    else {
-        Error("factor: syntax error");
-        tokenIterator++;
+    else
+	{
+		this->Error("factor: syntax error");
+		this->tokenIterator++;
     }
 }
 
 void bv::Parser::RecursiveDescent::Term()
 {
-    Factor();
-    while (Accept(Lexeme::Multiply) || Accept(Lexeme::Divide))
+    this->Factor();
+    while (this->Accept(Lexeme::Multiply) || this->Accept(Lexeme::Divide))
     {
-        Factor();
+        this->Factor();
     }
 }
 
 void bv::Parser::RecursiveDescent::Expression()
 {
-    if (Accept(Lexeme::Addition) || Accept(Lexeme::Subtraction))
+    if (this->Accept(Lexeme::Addition) || this->Accept(Lexeme::Subtraction))
     {
         ;
     }
-    Term();
-    while (Accept(Lexeme::Addition) || Accept(Lexeme::Subtraction))
+    this->Term();
+    while (this->Accept(Lexeme::Addition) || this->Accept(Lexeme::Subtraction))
     {
-        Term();
+		this->Term();
     }
 }
 
 void bv::Parser::RecursiveDescent::Condition()
 {
-    if (Accept(Lexeme::Not))
+    if (this->Accept(Lexeme::Not))
     {
-        Factor();
+		this->Factor();
     }
     else
     {
-        Expression();
-        std::shared_ptr<ParseTreeNode> lhs = tree;
-        tree = nullptr;
+		this->Expression();
+        std::shared_ptr<ParseTreeNode> lhs = this->tree;
+		this->tree = nullptr;
 
         if (Accept(Lexeme::Equal) || Accept(Lexeme::NotEqual) || Accept(Lexeme::LessThan) || Accept(Lexeme::LessThanOrEqual) || Accept(Lexeme::GreaterThan) || Accept(Lexeme::GreaterThanOrEqual))
         {
-            tree->nodes.push_back(lhs);
-            std::shared_ptr<ParseTreeNode> tempTree = tree;
-            tree = nullptr;
-            Expression();
-            tempTree->nodes.push_back(tree);
-            tree = tempTree;
+			this->tree->nodes.push_back(lhs);
+            std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+			this->tree = nullptr;
+			this->Expression();
+            tempTree->nodes.push_back(this->tree);
+			this->tree = tempTree;
         }
         else
         {
-            Error("condition: invalid operator");
+			this->Error("condition: invalid operator");
         }
     }
 }
 
 void bv::Parser::RecursiveDescent::Statement()
 {
-    std::shared_ptr<ParseTreeNode> masterTree = tree;
-    tree = nullptr;
+    std::shared_ptr<ParseTreeNode> masterTree = this->tree;
+	this->tree = nullptr;
 
-    if (Accept(Lexeme::Identifier))
+    if (this->Accept(Lexeme::Identifier))
     {
-        Expect(Lexeme::Assign);
-        if (!Accept(Lexeme::String))
+		this->Expect(Lexeme::Assign);
+        if (!this->Accept(Lexeme::String))
         {
-            std::shared_ptr<ParseTreeNode> tree2 = tree;
-            tree = nullptr;
-            Expression();
-            tree2->nodes.push_back(tree);
-            tree = tree2;
+            std::shared_ptr<ParseTreeNode> tree2 = this->tree;
+			this->tree = nullptr;
+			this->Expression();
+            tree2->nodes.push_back(this->tree);
+			this->tree = tree2;
         }
     }
-    else if (Accept(Lexeme::If))
+    else if (this->Accept(Lexeme::If))
     {
-        std::shared_ptr<ParseTreeNode> tempTree = tree;
-        tree = nullptr;
-        Condition();
-        tempTree->nodes.push_back(tree);
-        tree = nullptr;
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+		this->tree = nullptr;
+		this->Condition();
+        tempTree->nodes.push_back(this->tree);
+		this->tree = nullptr;
 
-        Expect(Lexeme::Then);
-        if (Accept(Lexeme::NewLine))
+		this->Expect(Lexeme::Then);
+        if (this->Accept(Lexeme::NewLine))
         {
             
-            Block();
-            tempTree->nodes.push_back(tree);
-            tree = tempTree;
+			this->Block();
+            tempTree->nodes.push_back(this->tree);
+			this->tree = tempTree;
 
-            Expect(Lexeme::End);
-            Expect(Lexeme::If);
+			this->Expect(Lexeme::End);
+			this->Expect(Lexeme::If);
         }
         else
         {
-            Statement();
+			this->Statement();
         }
 
-        tempTree->nodes.push_back(tree);
-        tree = tempTree;
+        tempTree->nodes.push_back(this->tree);
+		this->tree = tempTree;
         
     }
-    else if (Accept(Lexeme::Case))
+    else if (this->Accept(Lexeme::Case))
     {
-        Expect(Lexeme::Identifier);
-        Expect(Lexeme::Of);
-        Expect(Lexeme::NewLine);
+		this->Expect(Lexeme::Identifier);
+		this->Expect(Lexeme::Of);
+		this->Expect(Lexeme::NewLine);
 
 
 
-        std::shared_ptr<ParseTreeNode> tempTree = tree;
-        tree = nullptr;
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+		this->tree = nullptr;
 
-        while (Accept(Lexeme::When))
+        while (this->Accept(Lexeme::When))
         {
-            if (Accept(Lexeme::Integer) || Accept(Lexeme::Real) || Accept(Lexeme::String))
+            if (this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String))
             {
-                Expect(Lexeme::Colon);
-                Block();
+				this->Expect(Lexeme::Colon);
+				this->Block();
             }
             else
             {
-                Error("Statement: No valid data given to When statement");
+				this->Error("Statement: No valid data given to When statement");
             }
 
-            tempTree->nodes.push_back(tree);
-            tree = nullptr;
+            tempTree->nodes.push_back(this->tree);
+			this->tree = nullptr;
         }
-        if (Accept(Lexeme::Otherwise))
+        if (this->Accept(Lexeme::Otherwise))
         {
-            Expect(Lexeme::Colon);
-            Block();
+			this->Expect(Lexeme::Colon);
+			this->Block();
         }
-        Expect(Lexeme::End);
-        Expect(Lexeme::Case);
+		this->Expect(Lexeme::End);
+		this->Expect(Lexeme::Case);
 
-        tempTree->nodes.push_back(tree);
-        tree = tempTree;
+        tempTree->nodes.push_back(this->tree);
+		this->tree = tempTree;
     }
-    else if (Accept(Lexeme::For))
+    else if (this->Accept(Lexeme::For))
     {
-        std::shared_ptr<ParseTreeNode> tempTree = tree;
-        tree = nullptr;
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+		this->tree = nullptr;
 
-        Expect(Lexeme::Identifier);
-        Expect(Lexeme::Assign);
-        if (Accept(Lexeme::Identifier) || Accept(Lexeme::Integer))
+		this->Expect(Lexeme::Identifier);
+		this->Expect(Lexeme::Assign);
+        if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer))
         {
-            tempTree->nodes.push_back(tree);
-            tree = nullptr;
+            tempTree->nodes.push_back(this->tree);
+			this->tree = nullptr;
 
-            Expect(Lexeme::To);
-            if(Accept(Lexeme::Identifier) || Accept(Lexeme::Integer))
+			this->Expect(Lexeme::To);
+            if(this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer))
             {
-                tempTree->nodes.push_back(tree);
-                tree = nullptr;
+                tempTree->nodes.push_back(this->tree);
+				this->tree = nullptr;
 
-                if (Accept(Lexeme::NewLine))
+                if (this->Accept(Lexeme::NewLine))
                 {
-                    Block();
-                    tempTree->nodes.push_back(tree);
-                    tree = tempTree;
+					this->Block();
+                    tempTree->nodes.push_back(this->tree);
+					this->tree = tempTree;
 
-                    Expect(Lexeme::Next);
-                    Expect(Lexeme::Identifier);
+					this->Expect(Lexeme::Next);
+					this->Expect(Lexeme::Identifier);
                 }
                 else
                 {
-                    Statement();
-                    tempTree->nodes.push_back(tree);
-                    tree = tempTree;
+					this->Statement();
+                    tempTree->nodes.push_back(this->tree);
+					this->tree = tempTree;
                 }
             }
             else
             {
-                Error("Invalid range end for FOR loop...");
+				this->Error("Invalid range end for FOR loop...");
             }
         }
         else
         {
-            Error("Invalid range beginning for FOR loop...");
+			this->Error("Invalid range beginning for FOR loop...");
         }
     }
     else if (Accept(Lexeme::While))
     {
-        std::shared_ptr<ParseTreeNode> tempTree = tree;
-        tree = nullptr;
-        Condition();
-        tempTree->nodes.push_back(tree);
-        tree = nullptr;
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+		this->tree = nullptr;
+		this->Condition();
+        tempTree->nodes.push_back(this->tree);
+		this->tree = nullptr;
 
-        Expect(Lexeme::Do);
-        if (Accept(Lexeme::NewLine))
+		this->Expect(Lexeme::Do);
+        if (this->Accept(Lexeme::NewLine))
         {
-            Block();
-            Expect(Lexeme::End);
-            Expect(Lexeme::While);
+			this->Block();
+			this->Expect(Lexeme::End);
+			this->Expect(Lexeme::While);
         }
         else
         {
-            Statement();
+			this->Statement();
         }
-        tempTree->nodes.push_back(tree);
-        tree = tempTree;
+        tempTree->nodes.push_back(this->tree);
+		this->tree = tempTree;
 
     }
     else
     {
-        Error("Statement: Syntax Error");
+		this->Error("Statement: Syntax Error");
     }
 
     if (masterTree != nullptr)
     {
-        masterTree->nodes.push_back(tree);
-        tree = masterTree;
+        masterTree->nodes.push_back(this->tree);
+		this->tree = masterTree;
     }
     else
     {
-        masterTree = tree;
+        masterTree = this->tree;
     }
 }
 
 void bv::Parser::RecursiveDescent::Block()
 {
-    std::shared_ptr<ParseTreeNode> masterTree = tree;
-    tree = nullptr;
+    std::shared_ptr<ParseTreeNode> masterTree = this->tree;
+	this->tree = nullptr;
 
     std::vector<std::shared_ptr<ParseTreeNode>> blockTrees;
 
     do
     {
-        if (Accept(Lexeme::Data))
+        if (this->Accept(Lexeme::Data))
         {
-            std::shared_ptr<ParseTreeNode> tempTree = tree;
-            tree = nullptr;
+            std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+			this->tree = nullptr;
             do
             {
-                Expect(Lexeme::Identifier);
-                Expect(Lexeme::Assign);
-                if (Accept(Lexeme::Identifier) || Accept(Lexeme::Integer) || Accept(Lexeme::String))
+				this->Expect(Lexeme::Identifier);
+				this->Expect(Lexeme::Assign);
+                if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::String))
                 {
                     ;
                 }
                 else
                 {
-                    Error("Invalid data type passed to data");
+					this->Error("Invalid data type passed to data");
                 }
-            } while (Accept(Lexeme::Comma));
-            tempTree->nodes.push_back(tree);
-            tree = tempTree;
+            } while (this->Accept(Lexeme::Comma));
+            tempTree->nodes.push_back(this->tree);
+			this->tree = tempTree;
         }
-        else if (Accept(Lexeme::Dim))
+        else if (this->Accept(Lexeme::Dim))
         {
-            std::shared_ptr<ParseTreeNode> tempTree = tree;
-            tree = nullptr;
+            std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+			this->tree = nullptr;
             do
             {
-                Expect(Lexeme::Identifier);
-                if (Accept(Lexeme::Assign))
+				this->Expect(Lexeme::Identifier);
+                if (this->Accept(Lexeme::Assign))
                 {
-                    if (Accept(Lexeme::Identifier) || Accept(Lexeme::Integer) || Accept(Lexeme::String))
+                    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::String))
                     {
                         ;
                     }
                     else
                     {
-                        Error("Invalid data type passed to dim");
+						this->Error("Invalid data type passed to dim");
                     }
                 }
-            } while (Accept(Lexeme::Comma));
-            tempTree->nodes.push_back(tree);
-            tree = tempTree;
+            } while (this->Accept(Lexeme::Comma));
+            tempTree->nodes.push_back(this->tree);
+			this->tree = tempTree;
         }
         else
         {
-            Statement();
+			this->Statement();
         }
 
-        std::shared_ptr<ParseTreeNode> tempTree = tree;
-        tree = nullptr;
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+		this->tree = nullptr;
         blockTrees.push_back(tempTree);
-    } while (Accept(Lexeme::NewLine));
+    } while (this->Accept(Lexeme::NewLine));
 
     std::shared_ptr<ParseTreeNode> wholeTree = nullptr;
     for (int i = blockTrees.size() - 1; i > -1; i--)
@@ -393,7 +394,7 @@ void bv::Parser::RecursiveDescent::Block()
         masterTree->nodes.push_back(wholeTree);
     }
 
-    tree = masterTree;
+	this->tree = masterTree;
 
 
 }
@@ -402,10 +403,10 @@ void bv::Parser::RecursiveDescent::Program()
 {
     //Space for function declarations here in future. For now, a program is just a block.
 
-    Block();
+	this->Block();
 }
 
 void bv::Parser::RecursiveDescent::Error(std::string s)
 {
-    std::cout << s << std::endl << "Line " << (*tokenIterator).line << ", position " << (*tokenIterator).position << ".";
+    std::cout << s << std::endl << "Line " << (*this->tokenIterator).line << ", position " << (*this->tokenIterator).position << ".";
 }
