@@ -27,7 +27,10 @@ namespace bv
             void Block();
             void Program();
             void Error(std::string);
+
+		public:
             std::shared_ptr<ParseTreeNode> tree;
+		private:
             std::vector<Token>* tokens;
             std::vector<Token>::iterator tokenIterator;
         };

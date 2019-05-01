@@ -5,6 +5,23 @@
 #include "Types\Token.hpp"
 #include "Types\Lexeme.hpp"
 
+struct PNode
+{
+	std::vector<size_t> branches;
+	size_t datum;
+
+	PNode()
+	{
+	}
+
+	PNode(size_t datum)
+	{
+		this->datum = datum;
+	}
+};
+
+size_t ParseTree(std::vector<PNode>* nodes, size_t* count, bv::ParseTreeNode node);
+
 int main(int argc, char* argv[])
 {
 	std::string filepath;
@@ -42,4 +59,24 @@ int main(int argc, char* argv[])
     bv::Parser::RecursiveDescent parser;
     parser.Parse(&tokens);
 
+	std::vector<PNode> nodes;
+	size_t count = 0;
+	size_t root = 0;
+	ParseTree(&nodes, &count ,*parser.tree);
+
+	return 0;
+}
+
+size_t ParseTree(std::vector<PNode>* nodes, size_t* count, bv::ParseTreeNode node)
+{
+	size_t node_index = (*count)++;
+	nodes->push_back(PNode(node.index));
+	std::vector<size_t> children;
+	for (const auto& branch : node.nodes)
+	{
+		size_t cindex = ParseTree(nodes, count, *branch);
+		nodes->at(node_index).branches.push_back(cindex);
+	}
+
+	return node_index;
 }
