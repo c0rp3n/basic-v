@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -109,9 +110,11 @@ int main(int argc, char* argv[])
 
 	std::string fileout;
 	{
-		size_t filename = filepath.find_last_of(u8'\\');
-		size_t fileExtension = filepath.find_last_of(u8'.');
-		fileout = filepath.substr(0, filename) + u8"lexeme\\" + filepath.substr() + u8"-tokens.json";
+		std::filesystem::path path(filepath);
+		std::string filename = path.filename().u8string();
+		size_t fileextention = filename.find_last_of(u8'.');
+		path.replace_filename(filename.substr(0, fileextention) + u8"-lexeme.json");
+		fileout = path.u8string();
 	}
 
 	bv::Token::Serialise(fileout, &tokens);
