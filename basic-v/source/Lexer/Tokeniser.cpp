@@ -49,6 +49,10 @@ void bv::Lexer::Tokeniser::TokeniseLine(std::string line, uint64_t lineNumber, s
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::If));
             }
+            else if (value == "else")
+            {
+                tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Else));
+            }
             else if (value == "then")
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Then));
