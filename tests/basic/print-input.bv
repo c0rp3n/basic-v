@@ -1,0 +1,3 @@
+dim constantInteger = input
+print constantInteger
+print (constantInteger + 4)

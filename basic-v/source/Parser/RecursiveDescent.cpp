@@ -80,7 +80,7 @@ void bv::Parser::RecursiveDescent::AddToTree()
 
 void bv::Parser::RecursiveDescent::Factor()
 {
-    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::Integer))
+    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Input))
     {
         ;
     }
@@ -162,6 +162,27 @@ void bv::Parser::RecursiveDescent::Statement()
             tree2->nodes.push_back(this->tree);
             this->tree = tree2;
         }
+    }
+    else if (this->Accept(Lexeme::Print))
+    {
+        std::shared_ptr<ParseTreeNode> tempTree = this->tree;
+        this->tree = nullptr;
+
+        if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String))
+        {
+            ;
+        }
+        else if (this->Accept(Lexeme::OpenBracket))
+        {
+            this->Expression();
+            this->Expect(Lexeme::CloseBracket);
+        }
+        else
+        {
+            this->Error("Invalid value passed to PRINT");
+        }
+        tempTree->nodes.push_back(this->tree);
+        this->tree = tempTree;
     }
     else if (this->Accept(Lexeme::If))
     {
@@ -353,7 +374,7 @@ void bv::Parser::RecursiveDescent::Block()
                 this->Expect(Lexeme::Identifier);
                 if (this->Accept(Lexeme::Assign))
                 {
-                    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String))
+                    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String) || this->Accept(Lexeme::Input))
                     {
                         ;
                     }
@@ -415,5 +436,7 @@ void bv::Parser::RecursiveDescent::Program()
 
 void bv::Parser::RecursiveDescent::Error(std::string s)
 {
+    if (this->tokenIterator == this->tokens->end())
+        return;
     std::cout << s << std::endl << "Line " << (*this->tokenIterator).line << ", position " << (*this->tokenIterator).position << ".";
 }

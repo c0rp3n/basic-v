@@ -1,0 +1,3 @@
+data constantInteger = 3
+print constantInteger
+print (constantInteger + 4)
