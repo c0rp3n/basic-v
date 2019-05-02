@@ -320,6 +320,10 @@ void bv::Parser::RecursiveDescent::Block()
 
     do
     {
+		if (this->Accept(Lexeme::NewLine))
+		{
+			continue;
+		}
         if (this->Accept(Lexeme::Data))
         {
             std::shared_ptr<ParseTreeNode> tempTree = this->tree;
@@ -328,7 +332,7 @@ void bv::Parser::RecursiveDescent::Block()
             {
 				this->Expect(Lexeme::Identifier);
 				this->Expect(Lexeme::Assign);
-                if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::String))
+                if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String))
                 {
                     ;
                 }
@@ -349,7 +353,7 @@ void bv::Parser::RecursiveDescent::Block()
 				this->Expect(Lexeme::Identifier);
                 if (this->Accept(Lexeme::Assign))
                 {
-                    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::String))
+                    if (this->Accept(Lexeme::Identifier) || this->Accept(Lexeme::Integer) || this->Accept(Lexeme::Real) || this->Accept(Lexeme::String))
                     {
                         ;
                     }
@@ -369,7 +373,10 @@ void bv::Parser::RecursiveDescent::Block()
 
         std::shared_ptr<ParseTreeNode> tempTree = this->tree;
 		this->tree = nullptr;
-        blockTrees.push_back(tempTree);
+		if (tempTree != nullptr)
+		{
+			blockTrees.push_back(tempTree);
+		}
     } while (this->Accept(Lexeme::NewLine));
 
     std::shared_ptr<ParseTreeNode> wholeTree = nullptr;
