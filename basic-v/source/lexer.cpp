@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 
 	/////// @TODO FIX THIS FUCKING THING
     std::vector<bv::Token> tokens;
+	/*
     {
         std::vector<std::vector<bv::Token>> threadTokens;
 
@@ -108,6 +109,14 @@ int main(int argc, char* argv[])
             }
         }
     }
+	*/
+	bv::Lexer::Tokeniser::TokeniseLines
+	(
+		lines.begin(),
+		lines.end(),
+		0,
+		&tokens
+	);
 
 	std::string fileout;
 	{
