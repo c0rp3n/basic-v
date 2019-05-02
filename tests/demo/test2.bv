@@ -1,0 +1,13 @@
+data valCheck = 2
+dim a = input
+dim b = input
+dim dVal
+dim result
+
+dVal = b/a
+
+if (dVal > valCheck) result = "bigger"
+else if (dVal == valCheck) result = "equal"
+else result = "smaller"
+
+print result
