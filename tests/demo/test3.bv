@@ -1,0 +1,12 @@
+dim a = 0
+dim b = 1
+dim i = 1
+dim sum
+
+while (a < 1000) do
+    print a
+	sum = (a + b)
+	a = b
+	b = sum
+	a = a + 1
+end while

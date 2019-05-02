@@ -230,8 +230,6 @@ void bv::Parser::RecursiveDescent::Statement()
         }
 
         this->tree = tempTree;
-        this->Expect(Lexeme::End);
-        this->Expect(Lexeme::If);
     }
     else if (this->Accept(Lexeme::Case))
     {
@@ -326,14 +324,20 @@ void bv::Parser::RecursiveDescent::Statement()
         if (this->Accept(Lexeme::NewLine))
         {
             this->Block();
+            tempTree->nodes.push_back(this->tree);
+            tree = nullptr;
             this->Expect(Lexeme::End);
-            this->Expect(Lexeme::While);
+            //this->Expect(Lexeme::While);
+            this->tokenIterator++;
         }
         else
         {
             this->Statement();
         }
-        tempTree->nodes.push_back(this->tree);
+        if (tree != nullptr)
+        {
+            tempTree->nodes.push_back(this->tree);
+        }
         this->tree = tempTree;
 
     }
