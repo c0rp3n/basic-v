@@ -10,6 +10,7 @@ void bv::Lexer::Tokeniser::TokeniseLines(std::vector<std::string>::iterator star
     {
         bv::Lexer::Tokeniser::TokeniseLine((*start), startLine, tokens);
         start++;
+		startLine++;
     }
 }
 
