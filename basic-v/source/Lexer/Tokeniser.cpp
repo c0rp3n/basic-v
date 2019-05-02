@@ -121,6 +121,14 @@ void bv::Lexer::Tokeniser::TokeniseLine(std::string line, uint64_t lineNumber, s
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Call));
             }
+            else if(value == "print")
+            {
+                tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Print));
+            }
+            else if (value == "input")
+            {
+                tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Input));
+            }
             else
             {
                 tokens->push_back(bv::Token(lineNumber, position, bv::Lexeme::Identifier, value));
