@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 		fileout = path.u8string();
 	}
 
-	bv::PNode::Serialise(fileout, &nodes);
+    bv::PNode::Serialise(fileout, &nodes);
 
 	return 0;
 }
