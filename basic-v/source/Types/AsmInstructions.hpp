@@ -4,15 +4,15 @@
 
 namespace bv::Asm::Instruction
 {
-    const std::string Add = "add {0}, {1}, {2}";
-    const std::string AddI = "addi {0}, {1}, {2}";
-    const std::string Move = "mv {0}, {1}";
-    const std::string LoadAddress = "la {0}, {1}";
-    const std::string LoadInstant = "li {0}, {1}";
-    const std::string StoreWord = "sw {0}, {1}, {2}";
-    const std::string FloatLoadWord = "flw {0}, {1}, {2}";
-    const std::string FloatStoreWord = "fsw {0}, {1}, {2}";
-    const std::string BranchEqual = "beq {0}, {1}, {2}";
-    const std::string BranchGreaterThan = "bgt {0}, {1}, {2}";
-    const std::string Jump = "j {0}";
+    const std::string Add = u8"add {0}, {1}, {2}\n";
+    const std::string AddI = u8"addi {0}, {1}, {2}\n";
+    const std::string Move = u8"mv {0}, {1}\n";
+    const std::string LoadAddress = u8"la {0}, {1}\n";
+    const std::string LoadInstant = u8"li {0}, {1}\n";
+    const std::string StoreWord = u8"sw {0}, {1}, {2}\n";
+    const std::string FloatLoadWord = u8"flw {0}, {1}, {2}\n";
+    const std::string FloatStoreWord = u8"fsw {0}, {1}, {2}\n";
+    const std::string BranchEqual = u8"beq {0}, {1}, {2}\n";
+    const std::string BranchGreaterThan = u8"bgt {0}, {1}, {2}\n";
+    const std::string Jump = u8"j {0}\n";
 }

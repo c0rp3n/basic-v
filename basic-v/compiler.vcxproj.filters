@@ -20,6 +20,15 @@
       <Filter>Types</Filter>
     </ClInclude>
     <ClInclude Include="source\Types\PNode.hpp" />
+    <ClInclude Include="source\Types\AsmRegisters.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmInstructions.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmDataTypes.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Types">
