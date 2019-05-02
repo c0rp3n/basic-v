@@ -33,7 +33,7 @@ namespace bv
                 // Read the next line from File untill it reaches the end.
                 while (std::getline(in, str))
                 {
-                    lines.push_back(str);
+                    lines.push_back(str + "\n");
                 }
                 //Close The File
                 in.close();

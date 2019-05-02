@@ -9,16 +9,16 @@ namespace bv
     struct ParseTreeNode
     {
         std::vector<std::shared_ptr<ParseTreeNode>> nodes;
-        Token token;
+        size_t index;
 
         ParseTreeNode()
         {
 
         }
 
-        ParseTreeNode(Token token)
+        ParseTreeNode(size_t index)
         {
-            this->token = token;
+            this->index = index;
         }
     };
 }
