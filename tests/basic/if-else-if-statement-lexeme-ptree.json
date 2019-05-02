@@ -1,0 +1,42 @@
+{
+    "nodes": [
+        {
+            "branches": [
+                1,
+                4
+            ],
+            "datum": 0
+        },
+        {
+            "branches": [
+                2,
+                3
+            ],
+            "datum": 2
+        },
+        {
+            "branches": [],
+            "datum": 1
+        },
+        {
+            "branches": [],
+            "datum": 3
+        },
+        {
+            "branches": [
+                5
+            ],
+            "datum": 5
+        },
+        {
+            "branches": [
+                6
+            ],
+            "datum": 7
+        },
+        {
+            "branches": [],
+            "datum": 6
+        }
+    ]
+}

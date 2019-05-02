@@ -120,6 +120,8 @@ void bv::Parser::RecursiveDescent::Expression()
 
 void bv::Parser::RecursiveDescent::Condition()
 {
+    this->Expect(Lexeme::OpenBracket);
+
     if (this->Accept(Lexeme::Not))
     {
         this->Factor();
@@ -144,6 +146,8 @@ void bv::Parser::RecursiveDescent::Condition()
             this->Error("condition: invalid operator");
         }
     }
+
+    this->Expect(Lexeme::CloseBracket);
 }
 
 void bv::Parser::RecursiveDescent::Statement()
@@ -191,45 +195,43 @@ void bv::Parser::RecursiveDescent::Statement()
         this->Condition();
         tempTree->nodes.push_back(this->tree);
         this->tree = nullptr;
+        this->Statement();
+        tempTree->nodes.push_back(this->tree);
+        this->tree = nullptr;
 
-        if (this->Accept(Lexeme::NewLine))
+        this->Expect(Lexeme::NewLine);
+
+        while (this->Accept(Lexeme::Else))
         {
-            this->Block();
-            tempTree->nodes.push_back(this->tree);
+            std::shared_ptr<ParseTreeNode> elseTree = this->tree;
             tree = nullptr;
 
-            while (this->Accept(Lexeme::Else))
+            if (this->Accept(Lexeme::If))
             {
-                std::shared_ptr<ParseTreeNode> elseTree = this->tree;
-                tree = nullptr;
-
-                if (this->Accept(Lexeme::If))
-                {
-                    std::shared_ptr<ParseTreeNode> ifTree = this->tree;
-                    this->tree = nullptr;
-                    this->Condition();
-                    ifTree->nodes.push_back(this->tree);
-                    this->tree = nullptr;
-                }
-
-                this->Block();
-
-                elseTree->nodes.push_back(this->tree);
-                tempTree->nodes.push_back(elseTree);
+                std::shared_ptr<ParseTreeNode> ifTree = this->tree;
+                this->tree = nullptr;
+                this->Condition();
+                ifTree->nodes.push_back(this->tree);
+                this->tree = nullptr;
+                this->Statement();
+                ifTree->nodes.push_back(this->tree);
+                tree = ifTree;
             }
+            else
+            {
+                this->Statement();
+            }
+            
+            this->Expect(Lexeme::NewLine);
 
-            this->tree = tempTree;
-            this->Expect(Lexeme::End);
-            this->Expect(Lexeme::If);
-        }
-        else
-        {
-            this->Statement();
+            elseTree->nodes.push_back(this->tree);
+            tempTree->nodes.push_back(elseTree);
+            this->tree = nullptr;
         }
 
-        tempTree->nodes.push_back(this->tree);
         this->tree = tempTree;
-
+        this->Expect(Lexeme::End);
+        this->Expect(Lexeme::If);
     }
     else if (this->Accept(Lexeme::Case))
     {
