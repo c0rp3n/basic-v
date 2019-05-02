@@ -54,6 +54,10 @@ namespace bv
         static bool Parse(std::string jsonpath, std::vector<Token>* tokens)
         {
             std::ifstream ifs(jsonpath);
+			if (ifs.bad())
+			{
+				return false;
+			}
 
 			std::string data;
 			data.assign((std::istreambuf_iterator<char>(ifs)),
