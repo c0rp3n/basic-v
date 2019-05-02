@@ -4,27 +4,12 @@
 
 #include <nlohmann/json.hpp>
 
-#include "Parser\RecursiveDescent.hpp"
-#include "Types\Token.hpp"
-#include "Types\Lexeme.hpp"
+#include "Parser/RecursiveDescent.hpp"
+#include "Types/Token.hpp"
+#include "Types/Lexeme.hpp"
+#include "Types/PNode.hpp"
 
-struct PNode
-{
-	std::vector<size_t> branches;
-	size_t datum;
-
-	PNode()
-	{
-	}
-
-	PNode(size_t datum)
-	{
-		this->datum = datum;
-	}
-};
-
-size_t ParseTree(std::vector<PNode>* nodes, size_t* count, bv::ParseTreeNode node);
-void Serialise(std::string jsonpath, std::vector<PNode>* nodes);
+size_t ParseTree(std::vector<bv::PNode>* nodes, size_t* count, bv::ParseTreeNode node);
 
 int main(int argc, char* argv[])
 {
@@ -67,7 +52,7 @@ int main(int argc, char* argv[])
     bv::Parser::RecursiveDescent parser;
     parser.Parse(&tokens);
 
-	std::vector<PNode> nodes;
+	std::vector<bv::PNode> nodes;
 	size_t count = 0;
 	size_t root = 0;
 	ParseTree(&nodes, &count ,*parser.tree);
@@ -81,15 +66,15 @@ int main(int argc, char* argv[])
 		fileout = path.u8string();
 	}
 
-	Serialise(fileout, &nodes);
+	bv::PNode::Serialise(fileout, &nodes);
 
 	return 0;
 }
 
-size_t ParseTree(std::vector<PNode>* nodes, size_t* count, bv::ParseTreeNode node)
+size_t ParseTree(std::vector<bv::PNode>* nodes, size_t* count, bv::ParseTreeNode node)
 {
 	size_t node_index = (*count)++;
-	nodes->push_back(PNode(node.index));
+	nodes->push_back(bv::PNode(node.index));
 	std::vector<size_t> children;
 	for (const auto& branch : node.nodes)
 	{
@@ -98,21 +83,4 @@ size_t ParseTree(std::vector<PNode>* nodes, size_t* count, bv::ParseTreeNode nod
 	}
 
 	return node_index;
-}
-
-void Serialise(std::string jsonpath, std::vector<PNode>* nodes)
-{
-	nlohmann::json json;
-	json[u8"nodes"] = {};
-	for (PNode& n : *nodes)
-	{
-		json[u8"nodes"].push_back({
-			{ u8"branches", n.branches },
-			{ u8"datum", n.datum },
-			});
-	}
-
-	std::ofstream o(jsonpath, std::ios::binary);
-	o << std::setw(4) << json << std::endl;
-	o.close();
 }

@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="source\Parser\RecursiveDescent.hpp" />
     <ClInclude Include="source\Types\Lexeme.hpp" />
+    <ClInclude Include="source\Types\PNode.hpp" />
     <ClInclude Include="source\Types\PTree.hpp" />
     <ClInclude Include="source\Types\Token.hpp" />
   </ItemGroup>
