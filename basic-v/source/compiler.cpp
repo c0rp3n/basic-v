@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "Compiler/CodeGenerator.hpp"
 #include "Types/Token.hpp"
 #include "Types/Lexeme.hpp"
 #include "Types/PNode.hpp"
@@ -43,7 +44,7 @@ int main(int argc, char* argv[])
             {
                 if (i + 1 < argc)
                 {
-                    treepath = argv[++i];
+                    outputpath = argv[++i];
                 }
             }
         }
@@ -77,5 +78,5 @@ int main(int argc, char* argv[])
         }
     }
 
-
+    bv::Compiler::CodeGenerator::Parse(&tokens, &parsetree);
 }
