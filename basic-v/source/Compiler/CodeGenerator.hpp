@@ -79,11 +79,9 @@ namespace bv::Compiler
             int64_t home
         );
 
-        static void ParseTree
-        (
-            ParseData* data,
-            int64_t home
-        );
+        static void ParseTree(ParseData* data, int64_t home);
+
+        static void Condition(ParseData* data, int64_t home);
 
     public:
         static void Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>* nodes, std::string filepath = "help-me-for-fucks-sake.s");

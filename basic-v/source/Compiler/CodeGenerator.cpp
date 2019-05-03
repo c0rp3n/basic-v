@@ -102,6 +102,101 @@ void CodeGenerator::Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>
     }
 }
 
+void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std::string returnSymbol)
+{
+    bv::PNode* node = &data->nodes->at(data->nodeIndex);
+    bv::Token* token = &data->tokens->at(node->datum);
+
+    std::string comparison;
+
+    if (token->token == bv::Lexeme::Equal)
+    {
+        comparison = bv::Asm::Instruction::BranchEqual;
+    }
+    else if (token->token == bv::Lexeme::GreaterThan)
+    {
+        comparison = bv::Asm::Instruction::BranchGreaterThan;
+    }
+
+    if (GetNextNodeTillHome(data->nodes, &data->parents, &data->visited, &data->nodeIndex, home))
+    {
+        node = &data->nodes->at(data->nodeIndex);
+        token = &data->tokens->at(node->datum);
+
+        if (token->token == bv::Lexeme::Identifier)
+        {
+            data->text.push_back
+            (
+                TAB +
+                fmt::format
+                (
+                    bv::Asm::Instruction::LoadAddress,
+                    bv::Asm::Register::Temp0,
+                    token->value
+                )
+            );
+        }
+        else if (token->token == bv::Lexeme::Integer)
+        {
+            data->text.push_back
+            (
+                TAB +
+                fmt::format
+                (
+                    bv::Asm::Instruction::LoadInstant,
+                    bv::Asm::Register::Temp0,
+                    token->value
+                )
+            );
+        }
+    }
+
+    if (GetNextNodeTillHome(data->nodes, &data->parents, &data->visited, &data->nodeIndex, home))
+    {
+        node = &data->nodes->at(data->nodeIndex);
+        token = &data->tokens->at(node->datum);
+
+        if (token->token == bv::Lexeme::Identifier)
+        {
+            data->text.push_back
+            (
+                TAB +
+                fmt::format
+                (
+                    bv::Asm::Instruction::LoadAddress,
+                    bv::Asm::Register::Temp1,
+                    token->value
+                )
+            );
+        }
+        else if (token->token == bv::Lexeme::Integer)
+        {
+            data->text.push_back
+            (
+                TAB +
+                fmt::format
+                (
+                    bv::Asm::Instruction::LoadInstant,
+                    bv::Asm::Register::Temp1,
+                    token->value
+                )
+            );
+        }
+    }
+
+    data->text.push_back
+    (
+        TAB +
+        fmt::format
+        (
+            comparison,
+            bv::Asm::Register::Temp0,
+            bv::Asm::Register::Temp1,
+            returnSymbol
+        )
+    );
+}
+
 void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
 {
     bv::PNode* node = &data->nodes->at(data->nodeIndex);
@@ -515,6 +610,11 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
     }
 
     // Control / Flow
+    else if (token->token == bv::Lexeme::If) // if
+    {
+
+    }
+
     else if (token->token == bv::Lexeme::While)
     {
         // Add loop back point
@@ -522,10 +622,16 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
         data->text.push_back(symbol + ":\n");
 
         // Condition
-
+        if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        {
+            CodeGenerator::Condition(data, data->nodeIndex);
+        }
 
         // Body
-
+        if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        {
+            CodeGenerator::ParseTree(data, data->nodeIndex);
+        }
 
         // Loop back
         data->text.push_back
@@ -536,10 +642,5 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                 symbol
             )
         );
-    }
-
-    else if (token->token == bv::Lexeme::If) // if
-    {
-
     }
 }
