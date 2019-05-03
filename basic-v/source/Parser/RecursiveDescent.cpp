@@ -460,5 +460,5 @@ void bv::Parser::RecursiveDescent::Error(std::string s)
 {
     if (this->tokenIterator == this->tokens->end())
         return;
-    std::cout << s << std::endl << "Line " << ((*this->tokenIterator).line + 1) << ", position " << (*this->tokenIterator).position << "." << endl;
+    std::cout << s << std::endl << "Line " << ((*this->tokenIterator).line + 1) << ", position " << (*this->tokenIterator).position << "." << std::endl;
 }
