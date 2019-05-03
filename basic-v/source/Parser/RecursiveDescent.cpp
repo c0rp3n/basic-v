@@ -343,8 +343,10 @@ void bv::Parser::RecursiveDescent::Statement()
     }
     else
     {
-        if ((tokenIterator != tokens->end()) && (tokenIterator->token != Lexeme::NewLine))
+        if ((tokenIterator != tokens->end()) && (tokenIterator->token != Lexeme::NewLine && tokenIterator->token != Lexeme::End))
+        {
             this->Error("Statement: Syntax Error");
+        }
     }
 
     if (masterTree != nullptr)
