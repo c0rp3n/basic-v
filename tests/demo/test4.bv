@@ -1,0 +1,4 @@
+dim a = 0
+dim b = 1
+
+primt(a * b)

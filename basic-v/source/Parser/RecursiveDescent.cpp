@@ -221,7 +221,7 @@ void bv::Parser::RecursiveDescent::Statement()
             {
                 this->Statement();
             }
-            
+
             this->Expect(Lexeme::NewLine);
 
             elseTree->nodes.push_back(this->tree);
@@ -343,7 +343,8 @@ void bv::Parser::RecursiveDescent::Statement()
     }
     else
     {
-        this->Error("Statement: Syntax Error");
+        if ((tokenIterator != tokens->end()) && (tokenIterator->token != Lexeme::NewLine))
+            this->Error("Statement: Syntax Error");
     }
 
     if (masterTree != nullptr)
@@ -459,5 +460,5 @@ void bv::Parser::RecursiveDescent::Error(std::string s)
 {
     if (this->tokenIterator == this->tokens->end())
         return;
-    std::cout << s << std::endl << "Line " << (*this->tokenIterator).line << ", position " << (*this->tokenIterator).position << ".";
+    std::cout << s << std::endl << "Line " << ((*this->tokenIterator).line + 1) << ", position " << (*this->tokenIterator).position << "." << endl;
 }
