@@ -12,6 +12,7 @@
 int main(int argc, char* argv[])
 {
     std::string filepath;
+    std::string fileout;
     for (int i = 1; i < argc; i++)
     {
         if (argv[i][0] == 0)
@@ -30,6 +31,13 @@ int main(int argc, char* argv[])
                 if (i + 1 < argc)
                 {
                     filepath = argv[++i];
+                }
+            }
+            else if (argv[i][1] == 'o')
+            {
+                if (i + 1 < argc)
+                {
+                    fileout = argv[i + 1];
                 }
             }
         }
@@ -117,17 +125,15 @@ int main(int argc, char* argv[])
 		0,
 		&tokens
 	);
-
-	std::string fileout;
-	{
-		std::filesystem::path path(filepath);
-		std::string filename = path.filename().u8string();
-		size_t fileextention = filename.find_last_of(u8'.');
-		path.replace_filename(filename.substr(0, fileextention) + u8"-lexeme.json");
-		fileout = path.u8string();
-	}
-
-	bv::Token::Serialise(fileout, &tokens);
+    
+    if (fileout != "")
+    {
+        bv::Token::Serialise(fileout, &tokens);
+    }
+    else
+    {
+        std::cout << "No output file passed" << std::endl;
+    }
 
     return 0;
 }
