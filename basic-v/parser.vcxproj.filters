@@ -27,5 +27,8 @@
     <ClInclude Include="source\Parser\RecursiveDescent.hpp">
       <Filter>Parser</Filter>
     </ClInclude>
+    <ClInclude Include="source\Types\PNode.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

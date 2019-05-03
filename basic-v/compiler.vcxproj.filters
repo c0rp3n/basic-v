@@ -2,11 +2,43 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="source\compiler.cpp" />
+    <ClCompile Include="source\Compiler\CodeGenerator.cpp">
+      <Filter>Compiler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Types\AsTree.hpp" />
-    <ClInclude Include="source\Types\Lexeme.hpp" />
-    <ClInclude Include="source\Types\Token.hpp" />
-    <ClInclude Include="source\Compiler\CodeGenerator.hpp" />
+    <ClInclude Include="source\Types\Token.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\Lexeme.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Compiler\CodeGenerator.hpp">
+      <Filter>Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmSection.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmEnviromentCalls.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\PNode.hpp" />
+    <ClInclude Include="source\Types\AsmRegisters.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmInstructions.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Types\AsmDataTypes.hpp">
+      <Filter>Types</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Types">
+      <UniqueIdentifier>{3baf6520-1fd9-4b4c-a012-70386d502273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compiler">
+      <UniqueIdentifier>{6fc02357-e443-4623-8026-f467c6ec25dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
