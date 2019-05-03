@@ -42,6 +42,8 @@ namespace bv::Compiler
             size_t stringCount;
 
             size_t ifCount;
+            size_t elseIfCount;
+            size_t elseCount;
             size_t whileCount;
 
             std::map<std::string, bv::Lexeme> idTypes;
@@ -57,6 +59,8 @@ namespace bv::Compiler
                 this->floatCount = 0;
                 this->stringCount = 0;
                 this->ifCount = 0;
+                this->elseIfCount = 0;
+                this->elseCount = 0;
                 this->whileCount = 0;
                 this->nodeIndex = 0;
             }
@@ -81,7 +85,7 @@ namespace bv::Compiler
 
         static void ParseTree(ParseData* data, int64_t home);
 
-        static void Condition(ParseData* data, int64_t home);
+        static std::string Condition(ParseData* data, int64_t home, std::string jump);
 
     public:
         static void Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>* nodes, std::string filepath = "help-me-for-fucks-sake.s");

@@ -59,7 +59,7 @@ bool CodeGenerator::GetNextNodeTillHome
     return CodeGenerator::GetNextNodeTillHome(nodes, parents, visited, currentNode, home);
 }
 
-void CodeGenerator::Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>* nodes, std::string filepath = "help-me-for-fucks-sake.s")
+void CodeGenerator::Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>* nodes, std::string filepath)
 {
     CodeGenerator::ParseData data;
 
@@ -102,12 +102,14 @@ void CodeGenerator::Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>
     }
 }
 
-void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std::string returnSymbol)
+std::string CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std::string jump)
 {
     bv::PNode* node = &data->nodes->at(data->nodeIndex);
     bv::Token* token = &data->tokens->at(node->datum);
 
     std::string comparison;
+
+    std::string conditionText = "";
 
     if (token->token == bv::Lexeme::Equal)
     {
@@ -125,7 +127,7 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
 
         if (token->token == bv::Lexeme::Identifier)
         {
-            data->text.push_back
+            conditionText +=
             (
                 TAB +
                 fmt::format
@@ -138,7 +140,7 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
         }
         else if (token->token == bv::Lexeme::Integer)
         {
-            data->text.push_back
+            conditionText +=
             (
                 TAB +
                 fmt::format
@@ -158,7 +160,7 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
 
         if (token->token == bv::Lexeme::Identifier)
         {
-            data->text.push_back
+            conditionText +=
             (
                 TAB +
                 fmt::format
@@ -171,7 +173,7 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
         }
         else if (token->token == bv::Lexeme::Integer)
         {
-            data->text.push_back
+            conditionText +=
             (
                 TAB +
                 fmt::format
@@ -184,7 +186,7 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
         }
     }
 
-    data->text.push_back
+    conditionText +=
     (
         TAB +
         fmt::format
@@ -192,9 +194,11 @@ void CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t home, std:
             comparison,
             bv::Asm::Register::Temp0,
             bv::Asm::Register::Temp1,
-            returnSymbol
+            jump
         )
     );
+
+    return conditionText;
 }
 
 void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
@@ -612,19 +616,97 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
     // Control / Flow
     else if (token->token == bv::Lexeme::If) // if
     {
+    // Add loop back point
+        std::string endJump = u8"_end_if_" + data->ifCount;
+        std::string ifJump = u8"_if_" + data->ifCount++;
+        std::string elseIfJump = u8"_else_if_{}";
+        std::string elseJump = u8"_else_{}";
+        std::string jump = TAB + fmt::format
+        (
+            bv::Asm::Instruction::Jump,
+            endJump
+        );
+
+        // IF
+        // If condition
+        if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        {
+            data->text.push_back(CodeGenerator::Condition(data, data->nodeIndex, ifJump));
+        }
+        auto elseIfInsertPoint = data->text.end();
+        data->text.push_back
+        (
+            fmt::format
+            (
+                bv::Asm::Instruction::Jump,
+                elseJump
+            )
+        );
+
+        // If body
+        data->text.push_back(ifJump + ":\n");
+        if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        {
+            CodeGenerator::ParseTree(data, data->nodeIndex);
+        }
+        data->text.push_back(jump);
+
+        // ELSE
+        while (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        {
+            node = &data->nodes->at(data->nodeIndex);
+            token = &data->tokens->at(node->datum);
+
+            if (token->token == bv::Lexeme::Else)
+            {
+                GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex);
+                node = &data->nodes->at(data->nodeIndex);
+                token = &data->tokens->at(node->datum);
+
+                if (token->token == bv::Lexeme::If)
+                {
+                    // ELSE IF
+                    // Else if Condition
+                    data->text.insert(elseIfInsertPoint++, CodeGenerator::Condition(data, data->nodeIndex, fmt::format(elseIfJump, data->elseIfCount++)));
+
+                    // Else if Body
+                    if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+                    {
+                        data->text.push_back(elseIfJump + ":\n");
+                        CodeGenerator::ParseTree(data, data->nodeIndex);
+                        data->text.push_back(jump);
+                    }
+                }
+                else
+                {
+                    // Else
+                    data->text.push_back(fmt::format(elseJump, data->elseCount++) + ":\n");
+                    if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+                    {
+                        CodeGenerator::ParseTree(data, data->nodeIndex);
+                    }
+                    data->text.push_back(jump);
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
 
     }
 
     else if (token->token == bv::Lexeme::While)
     {
         // Add loop back point
-        std::string symbol = u8"_while_" + data->whileCount++;
+        std::string symbol = u8"_while_" + data->whileCount;
+        std::string jump = u8"_end_while_" + data->whileCount++;
         data->text.push_back(symbol + ":\n");
 
         // Condition
         if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
         {
-            CodeGenerator::Condition(data, data->nodeIndex);
+            CodeGenerator::Condition(data, data->nodeIndex, jump);
         }
 
         // Body
