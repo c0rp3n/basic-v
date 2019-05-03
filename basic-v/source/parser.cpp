@@ -67,14 +67,12 @@ int main(int argc, char* argv[])
 
     if (fileout != "")
     {
-        Serialise(fileout, &nodes);
+        bv::PNode::Serialise(fileout, &nodes);
     }
     else
     {
         std::cout << "Error: empty output string passed." << std::endl;
     }
-
-    bv::PNode::Serialise(fileout, &nodes);
 
 	return 0;
 }

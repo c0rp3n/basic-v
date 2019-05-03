@@ -56,12 +56,16 @@ bool CodeGenerator::GetNextNodeTillHome
     }
 
     *currentNode = parents->at(*currentNode);
-    return CodeGenerator::GetNextNodeTillHome(nodes, parents, visited, currentNode, home);
+    return CodeGenerator::GetNextNode(nodes, parents, visited, currentNode);
 }
 
 void CodeGenerator::Parse(std::vector<bv::Token>* tokens, std::vector<bv::PNode>* nodes, std::string filepath)
 {
     CodeGenerator::ParseData data;
+    data.tokens = tokens;
+    data.nodes = nodes;
+    data.visited.resize(nodes->size());
+    std::fill<std::vector<bool>::iterator, bool>(data.visited.begin(), data.visited.end(), false);
 
     data.parents.push_back(-1);
     do
@@ -119,8 +123,12 @@ std::string CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t hom
     {
         comparison = bv::Asm::Instruction::BranchGreaterThan;
     }
+    else if (token->token == bv::Lexeme::LessThan)
+    {
+        comparison = bv::Asm::Instruction::BranchLessThan;
+    }
 
-    if (GetNextNodeTillHome(data->nodes, &data->parents, &data->visited, &data->nodeIndex, home))
+    if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
     {
         node = &data->nodes->at(data->nodeIndex);
         token = &data->tokens->at(node->datum);
@@ -153,7 +161,7 @@ std::string CodeGenerator::Condition(CodeGenerator::ParseData* data, int64_t hom
         }
     }
 
-    if (GetNextNodeTillHome(data->nodes, &data->parents, &data->visited, &data->nodeIndex, home))
+    if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
     {
         node = &data->nodes->at(data->nodeIndex);
         token = &data->tokens->at(node->datum);
@@ -550,7 +558,7 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                         token->value
                     )
                 );
-                data->text.push_back(bv::Asm::Enviroment::Call);
+                data->text.push_back(TAB + bv::Asm::Enviroment::Call);
             }
             else if (token->token == bv::Lexeme::Int)
             {
@@ -567,7 +575,7 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                         token->value
                     )
                 );
-                data->text.push_back(bv::Asm::Enviroment::Call);
+                data->text.push_back(TAB + bv::Asm::Enviroment::Call);
             }
             else if (token->token == bv::Lexeme::Real)
             {
@@ -587,7 +595,7 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                     )
                 );
                 data->rodata.push_back(TAB + loc + u8": " + bv::Asm::DataTypes::real + u8" " + token->value + u8"\n");
-                data->text.push_back(bv::Asm::Enviroment::Call);
+                data->text.push_back(TAB + bv::Asm::Enviroment::Call);
             }
             else if (token->token == bv::Lexeme::String)
             {
@@ -608,7 +616,7 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                 );
 
                 data->rodata.push_back(TAB + loc + u8": " + bv::Asm::DataTypes::string + u8" " + token->value + u8"\n");
-                data->text.push_back(bv::Asm::Enviroment::Call);
+                data->text.push_back(TAB + bv::Asm::Enviroment::Call);
             }
         }
     }
@@ -631,25 +639,26 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
         // If condition
         if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
         {
-            data->text.push_back(CodeGenerator::Condition(data, data->nodeIndex, ifJump));
+            data->text.push_back(CodeGenerator::Condition(data, data->nodeIndex, fmt::format(ifJump, data->ifCount)));
         }
-        auto elseIfInsertPoint = data->text.end();
+        size_t elseIfInsertPoint = data->text.size();
         data->text.push_back
         (
             fmt::format
             (
                 bv::Asm::Instruction::Jump,
-                elseJump
+                fmt::format(elseJump, data->elseCount)
             )
         );
 
         // If body
-        data->text.push_back(ifJump + ":\n");
+        data->text.push_back(fmt::format(ifJump, data->ifCount) + ":\n");
         if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
         {
             CodeGenerator::ParseTree(data, data->nodeIndex);
         }
         data->text.push_back(jump);
+        data->ifCount++;
 
         // ELSE
         while (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
@@ -667,15 +676,17 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                 {
                     // ELSE IF
                     // Else if Condition
-                    data->text.insert(elseIfInsertPoint++, CodeGenerator::Condition(data, data->nodeIndex, fmt::format(elseIfJump, data->elseIfCount++)));
+                    data->text.insert(data->text.begin() + elseIfInsertPoint, CodeGenerator::Condition(data, data->nodeIndex, fmt::format(elseIfJump, data->elseIfCount)));
 
                     // Else if Body
                     if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
                     {
-                        data->text.push_back(elseIfJump + ":\n");
+                        data->text.push_back(fmt::format(elseIfJump, data->elseIfCount) + ":\n");
                         CodeGenerator::ParseTree(data, data->nodeIndex);
                         data->text.push_back(jump);
                     }
+
+                    data->elseIfCount++;
                 }
                 else
                 {
@@ -706,14 +717,16 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
         // Condition
         if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
         {
-            CodeGenerator::Condition(data, data->nodeIndex, jump);
+            data->text.push_back(CodeGenerator::Condition(data, data->nodeIndex, jump));
         }
 
         // Body
+        int64_t home = data->nodeIndex;
         if (GetNextNode(data->nodes, &data->parents, &data->visited, &data->nodeIndex))
+        do
         {
             CodeGenerator::ParseTree(data, data->nodeIndex);
-        }
+        } while (GetNextNodeTillHome(data->nodes, &data->parents, &data->visited, &data->nodeIndex, home));
 
         // Loop back
         data->text.push_back
@@ -724,5 +737,7 @@ void CodeGenerator::ParseTree(CodeGenerator::ParseData* data, int64_t home)
                 symbol
             )
         );
+
+        data->text.push_back(jump + ":\n");
     }
 }

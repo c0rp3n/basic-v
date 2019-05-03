@@ -52,9 +52,6 @@ namespace bv::Compiler
 
             ParseData()
             {
-                this->visited.resize(this->nodes->size());
-                std::fill<std::vector<bool>::iterator, bool>(this->visited.begin(), this->visited.end(), false);
-
                 this->savedRegisterCount = 0;
                 this->floatCount = 0;
                 this->stringCount = 0;

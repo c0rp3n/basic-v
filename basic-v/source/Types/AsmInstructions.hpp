@@ -14,5 +14,6 @@ namespace bv::Asm::Instruction
     const std::string FloatStoreWord = u8"fsw {0}, {1}, {2}\n";
     const std::string BranchEqual = u8"beq {0}, {1}, {2}\n";
     const std::string BranchGreaterThan = u8"bgt {0}, {1}, {2}\n";
+    const std::string BranchLessThan = u8"blt {0}, {1}, {2}\n";
     const std::string Jump = u8"j {0}\n";
 }
