@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\compiler.cpp" />
+    <ClCompile Include="source\Compiler\CodeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Compiler\CodeGenerator.hpp" />
